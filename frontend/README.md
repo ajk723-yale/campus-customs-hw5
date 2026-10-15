@@ -15,12 +15,12 @@ Full steps are in the project [README](../README.md) (steps 5–6). In short, th
 2. Frontend, from `frontend/` (first time: `npm install`):
 
    ```bash
-   BACKEND_PORT=8010 npm run dev -- --port 5180 --strictPort
+   npm run dev
    ```
 
 3. Open **http://localhost:5180** (page title "Campus Customs ops desk"). `?ticket=102` opens a ticket directly.
 
-Don't rely on Vite's default port: if 5173 is busy, Vite moves to the next free port, and an older app already on 5173 may be what you see. Without `BACKEND_PORT`, `/api` goes to port 8000, which may be a different app's server.
+`npm run dev` serves on **5180 only** (`--strictPort` in `package.json`: it stops with an error instead of switching ports) and proxies `/api` to the backend on **8010** (`vite.config.ts`). If the backend is on another port: `BACKEND_PORT=<port> npm run dev`. Don't open http://localhost:5173: that's Vite's usual default and may be a different app on your machine.
 
 ## Layout
 

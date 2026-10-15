@@ -184,10 +184,10 @@ Every agent ──MCP over stdio──> mcp_server/server.py ──> data/campus
 `backend/main.py` connects the React dashboard (Problem 8) to the agent team. Start it from the `backend/` folder:
 
 ```bash
-../.venv/bin/uvicorn main:app --reload --port 8000
+../.venv/bin/uvicorn main:app --reload --port 8010
 ```
 
-- **Base URL:** `http://127.0.0.1:8000`. Interactive docs are at `/docs`.
+- **Base URL:** `http://127.0.0.1:8010`. Interactive docs are at `/docs`.
 - **CORS:** allows the React dev servers on `localhost:5173` (Vite) and `localhost:3000`. Override with `CORS_ORIGINS`.
 - **Reuse:** the backend opens **one** MCP connection, shared with the agents. Every shop fact it returns (tickets, cash, approvals) comes through the MCP tools; there's no SQL in the backend. Runs use `run_team` and the five Problem 5 agents. Approvals use the shared `mcp_server/approvals.py`.
 
@@ -226,7 +226,7 @@ Every agent ──MCP over stdio──> mcp_server/server.py ──> data/campus
 
 `frontend/` is a React + Vite + TypeScript app (Lecture 7 structure, plain CSS, no UI library) that uses **only** the Problem 7 API routes. It doesn't change any business rule or safety mechanism: the backend still decides ticket status and resolution, and still enforces every approval and payment rule. See `frontend/README.md`.
 
-**Run:** backend from `backend/` with `../.venv/bin/uvicorn main:app --reload --port 8000`, then frontend from `frontend/` with `npm run dev`. Vite proxies `/api` to the backend. If port 8000 is busy, use another backend port and `BACKEND_PORT=<port> npm run dev`. No secrets are in the frontend.
+**Run:** backend from `backend/` with `../.venv/bin/uvicorn main:app --reload --port 8010`, then frontend from `frontend/` with `npm run dev`, which serves the dashboard on http://localhost:5180 (`--strictPort`: it stops instead of switching ports if 5180 is busy) and proxies `/api` to port 8010. If 8010 is busy, use another backend port and `BACKEND_PORT=<port> npm run dev`. No secrets are in the frontend.
 
 | Column | Component(s) | API routes used |
 |---|---|---|

@@ -2,7 +2,7 @@
 
 Start it from the backend/ folder:
 
-    ../.venv/bin/uvicorn main:app --reload --port 8000
+    ../.venv/bin/uvicorn main:app --reload --port 8010
 
 It reuses the Problem 5 system rather than duplicating it:
   - shop facts are read through the FastMCP server (the same MCP connection the

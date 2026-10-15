@@ -879,3 +879,23 @@ None.
 > Don't change the databases or rerun any agents. Report the correct URL for HW5.
 
 **What was missing after the previous prompt:** The README used the default ports (backend 8000, dashboard "normally http://localhost:5173"). On a machine already running HW4 on those ports, the backend command fails, Vite silently moves to another port, and the dashboard's `/api` calls go to the HW4 backend, so following the README showed the wrong app.
+
+### Follow-up prompt 4 (old ports 8000/5173 still published)
+
+> I found a potentially serious issue with Problem 11.
+> It still appeared to contain the old ports: backend 8000 and frontend 5173, even though you reported updating them to 8010 and 5180.
+> Investigate this carefully.
+>
+> 1. Fetch the latest README.md and frontend/README.md directly from the PUBLIC GitHub repository, not from my local files or a cached version.
+> 2. Verify the latest commit SHA and confirm that both README files contain the corrected HW5 startup instructions.
+> 3. Search both README files for all references to ports 8000, 8010, 5173, and 5180. Identify any outdated or misleading instructions.
+> 4. Verify that the published startup commands actually launch the HW5 backend on 8010 and the HW5 dashboard on 5180, with the correct Vite API proxy.
+> 5. Confirm that following the README from a fresh clone will NOT accidentally launch HW4 or connect HW5 to the HW4 backend.
+> 6. Check whether the discrepancy was caused by an incomplete Git push, an outdated branch, GitHub caching, or incorrect documentation.
+>
+> If there is an actual problem, fix the README files and push the corrections to GitHub. Then verify the published content again using unauthenticated requests.
+> Don't modify HW4, databases, agents, or any Problem 9–10 deliverables.
+> Record this prompt under Problem 11 in AI_prompts.md and push the updated prompt log as well.
+> Show me the exact published startup commands, the latest commit SHA, and the verification results. Don't claim success based only on local files.
+
+**What was missing after the previous prompt:** The two READMEs were correct and fully pushed, but other published files still pointed to the old ports: `frontend/vite.config.ts` proxied `/api` to port 8000 by default (so a plain `npm run dev` would connect HW5 to the HW4 backend), `npm run dev` had no fixed port, and the run instructions in `backend/main.py`, `frontend/src/App.tsx`, and `output/harness.md` still said 8000.

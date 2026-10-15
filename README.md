@@ -99,7 +99,7 @@ It talks MCP over stdin/stdout, so it waits silently for a client. Stop it with 
 
 ## 5. Start the FastAPI backend
 
-This project uses **port 8010** for the backend and **port 5180** for the dashboard. They're not the defaults (8000 and 5173), so it won't collide with other local projects that use them. First check that both ports are free:
+This project uses **port 8010** for the backend and **port 5180** for the dashboard, so it doesn't collide with other local apps on the common ports 8000 and 5173. First check that both ports are free:
 
 ```bash
 lsof -nP -iTCP:8010 -iTCP:5180 -sTCP:LISTEN
@@ -120,13 +120,14 @@ In a second terminal:
 
 ```bash
 cd frontend
-BACKEND_PORT=8010 npm run dev -- --port 5180 --strictPort
+npm run dev
 ```
 
 Open **http://localhost:5180**. The page title is **"Campus Customs ops desk"**.
 
-- `BACKEND_PORT` tells Vite which backend to forward `/api` calls to (it defaults to 8000). If it's wrong, the dashboard can end up talking to a different app's server on that port.
-- `--strictPort` makes Vite stop with an error if 5180 is taken, instead of quietly switching to another port. Without it, `npm run dev` falls back to the next free port (5173, 5174, …), and an older app already running on 5173 may be what you see.
+- `npm run dev` is set up (in `frontend/package.json` and `frontend/vite.config.ts`) to serve on **5180 only** (`--strictPort`: if 5180 is taken it stops with an error instead of switching ports) and to forward `/api` to the backend on **8010**.
+- If you started the backend on another port, tell Vite: `BACKEND_PORT=<port> npm run dev`.
+- Don't open http://localhost:5173: that's Vite's usual default and may be a different app on your machine.
 - Check the dashboard is connected: http://localhost:5180/api/health should show the same `gpt-6-luna` / `24` response as step 5.
 
 Vite forwards `/api` calls to the backend, so no keys reach the browser.
