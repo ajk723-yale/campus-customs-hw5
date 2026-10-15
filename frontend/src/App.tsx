@@ -154,7 +154,7 @@ export default function App() {
       {healthError && (
         <div className="banner banner-error" role="alert">
           Can't reach the backend ({healthError}). Start it from backend/ with uvicorn on the port this dev server proxies
-          to (8010 by default, or BACKEND_PORT).
+          to (8000 by default, or BACKEND_PORT).
         </div>
       )}
       {notice && (

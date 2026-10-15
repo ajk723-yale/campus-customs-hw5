@@ -99,36 +99,55 @@ It talks MCP over stdin/stdout, so it waits silently for a client. Stop it with 
 
 ## 5. Start the FastAPI backend
 
-This project uses **port 8010** for the backend and **port 5180** for the dashboard, so it doesn't collide with other local apps on the common ports 8000 and 5173. First check that both ports are free:
+The assignment's default ports are **8000** for the backend and **5173** for the dashboard (Vite). Use them unless another app is already running on them; then use the alternative ports in the second command (and in step 6).
 
 ```bash
-lsof -nP -iTCP:8010 -iTCP:5180 -sTCP:LISTEN
+lsof -nP -iTCP:8000 -iTCP:5173 -sTCP:LISTEN
 ```
 
-If that prints anything, another program is using the port: pick other ports and use them consistently in steps 5–7.
+If that prints nothing, both default ports are free.
+
+**Assignment defaults (port 8000):**
 
 ```bash
 cd backend
-../.venv/bin/uvicorn main:app --port 8010
+../.venv/bin/uvicorn main:app --reload --port 8000
 ```
 
-Check that it's up: http://127.0.0.1:8010/api/health should return `"model": "gpt-6-luna"` and `"mcp_tools": 24`.
+**Alternative ports (if 8000 is taken, e.g. by an earlier homework's server):**
+
+```bash
+cd backend
+../.venv/bin/uvicorn main:app --reload --port 8010
+```
+
+Check that it's up at http://127.0.0.1:8000/api/health (or `:8010`). It should return `"model": "gpt-6-luna"` and `"mcp_tools": 24`.
 
 ## 6. Start the React dashboard
 
-In a second terminal:
+In a second terminal.
+
+**Assignment defaults (Vite on 5173, `/api` forwarded to port 8000):**
 
 ```bash
 cd frontend
 npm run dev
 ```
 
-Open **http://localhost:5180**. The page title is **"Campus Customs ops desk"**.
+Open the URL Vite prints, normally **http://localhost:5173**.
 
-- `npm run dev` is set up (in `frontend/package.json` and `frontend/vite.config.ts`) to serve on **5180 only** (`--strictPort`: if 5180 is taken it stops with an error instead of switching ports) and to forward `/api` to the backend on **8010**.
-- If you started the backend on another port, tell Vite: `BACKEND_PORT=<port> npm run dev`.
-- Don't open http://localhost:5173: that's Vite's usual default and may be a different app on your machine.
-- Check the dashboard is connected: http://localhost:5180/api/health should show the same `gpt-6-luna` / `24` response as step 5.
+**Alternative ports (backend on 8010, dashboard on 5180):**
+
+```bash
+cd frontend
+BACKEND_PORT=8010 npm run dev -- --port 5180 --strictPort
+```
+
+Open **http://localhost:5180**.
+
+- `BACKEND_PORT` tells Vite which backend port to forward `/api` calls to (default 8000). It must match the port you gave uvicorn in step 5.
+- If 5173 is busy, plain `npm run dev` moves to the next free port (5174, …), so open the URL it prints. `--strictPort` makes Vite stop with an error instead of moving.
+- To confirm it's this project: the page title is **"Campus Customs ops desk"**, and `/api/health` on the dashboard's URL shows the same `gpt-6-luna` / `24` response as step 5.
 
 Vite forwards `/api` calls to the backend, so no keys reach the browser.
 
@@ -137,8 +156,10 @@ Vite forwards `/api` calls to the backend, so no keys reach the browser.
 1. **Reset.** Use the Reset button in the dashboard header, or:
 
    ```bash
-   curl -X POST http://127.0.0.1:8010/api/reset -H 'Content-Type: application/json' -d '{"confirm": "RESET"}'
+   curl -X POST http://127.0.0.1:8000/api/reset -H 'Content-Type: application/json' -d '{"confirm": "RESET"}'
    ```
+
+   (Use `:8010` if you started the backend on the alternative port.)
 
    This restores `data/campus_customs_new.db` from `data/campus_customs.db` (checked by hash), archives `payment_approvals.json` and `manager_events.json` to `output/approvals_archive/`, and adds a `database_reset` record to the audit trail. Checking goes back to **$3,400.00** and tickets 101, 102, and 103 are `open`.
 2. **Run a ticket.** Select it and click Run (or `POST /api/tickets/{id}/run`). Only one agent run happens at a time.

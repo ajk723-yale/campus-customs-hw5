@@ -4,12 +4,14 @@ The operations desk for the Campus Customs agent team. It talks only to the exis
 
 ## Run it
 
-Full steps are in the project [README](../README.md) (steps 5–6). In short, this project uses backend port **8010** and dashboard port **5180**:
+Full steps are in the project [README](../README.md) (steps 5–6).
+
+**Assignment defaults** (backend on 8000, dashboard on 5173):
 
 1. Backend, from `backend/`:
 
    ```bash
-   ../.venv/bin/uvicorn main:app --port 8010
+   ../.venv/bin/uvicorn main:app --reload --port 8000
    ```
 
 2. Frontend, from `frontend/` (first time: `npm install`):
@@ -18,9 +20,15 @@ Full steps are in the project [README](../README.md) (steps 5–6). In short, th
    npm run dev
    ```
 
-3. Open **http://localhost:5180** (page title "Campus Customs ops desk"). `?ticket=102` opens a ticket directly.
+3. Open the URL Vite prints (normally http://localhost:5173). `?ticket=102` opens a ticket directly.
 
-`npm run dev` serves on **5180 only** (`--strictPort` in `package.json`: it stops with an error instead of switching ports) and proxies `/api` to the backend on **8010** (`vite.config.ts`). If the backend is on another port: `BACKEND_PORT=<port> npm run dev`. Don't open http://localhost:5173: that's Vite's usual default and may be a different app on your machine.
+**Alternative ports** (when 8000/5173 are used by another app): start the backend with `--port 8010`, then run
+
+```bash
+BACKEND_PORT=8010 npm run dev -- --port 5180 --strictPort
+```
+
+and open http://localhost:5180. `BACKEND_PORT` sets where Vite forwards `/api` (default 8000); `--strictPort` makes Vite stop instead of moving to another port. The page title "Campus Customs ops desk" confirms you're on this dashboard.
 
 ## Layout
 

@@ -899,3 +899,24 @@ None.
 > Show me the exact published startup commands, the latest commit SHA, and the verification results. Don't claim success based only on local files.
 
 **What was missing after the previous prompt:** The two READMEs were correct and fully pushed, but other published files still pointed to the old ports: `frontend/vite.config.ts` proxied `/api` to port 8000 by default (so a plain `npm run dev` would connect HW5 to the HW4 backend), `npm run dev` had no fixed port, and the run instructions in `backend/main.py`, `frontend/src/App.tsx`, and `output/harness.md` still said 8000.
+
+### Follow-up prompt 5 (restore the assignment's default ports)
+
+> Problem 7 and 8 explicitly specify backend port 8000 and frontend-to-backend connections at http://localhost:8000, with Vite usually running on 5173.
+> I want the submitted GitHub project to follow those assignment defaults, while still allowing my local HW5 to run on 8010/5180 without conflicting with HW4.
+>
+> Restore the assignment defaults: FastAPI on port 8000, Vite on 5173, and frontend API requests routed to backend port 8000.
+>
+> Keep the ports configurable so I can continue using 8010/5180 locally.
+>
+> Make sure the assignment's `npm run dev` and `uvicorn main:app --reload --port 8000` commands work correctly from a fresh clone.
+>
+> Update README.md, frontend/README.md, and harness.md to explain both the assignment-default setup and the alternative local setup.
+>
+> Test both configurations in isolation, using spare ports where necessary, without stopping or modifying HW4 or my currently running HW5.
+>
+> Verify that all Problem 9–10 results, databases, and audit logs remain unchanged.
+> Before pushing, explain the exact changes and test results. Don't push until I approve.
+> Record this prompt under Problem 11 in AI_prompts.md.
+
+**What was missing after the previous prompt:** The final audit showed that making 8010/5180 the project defaults departed from Problems 7 and 8, which specify the backend on port 8000 (with Vite usually on 5173), so the submitted defaults had to go back to the assignment's while keeping 8010/5180 available as a local option.
