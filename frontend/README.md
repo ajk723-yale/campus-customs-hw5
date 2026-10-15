@@ -4,23 +4,23 @@ The operations desk for the Campus Customs agent team. It talks only to the exis
 
 ## Run it
 
+Full steps are in the project [README](../README.md) (steps 5–6). In short, this project uses backend port **8010** and dashboard port **5180**:
+
 1. Backend, from `backend/`:
 
    ```bash
-   ../.venv/bin/uvicorn main:app --reload --port 8000
+   ../.venv/bin/uvicorn main:app --port 8010
    ```
-
-   Check port 8000 first (`lsof -nP -iTCP:8000 -sTCP:LISTEN`). If another server is using it, start this backend on another port instead (e.g. `--port 8001`).
 
 2. Frontend, from `frontend/` (first time: `npm install`):
 
    ```bash
-   npm run dev
+   BACKEND_PORT=8010 npm run dev -- --port 5180 --strictPort
    ```
 
-   If the backend is not on 8000: `BACKEND_PORT=8001 npm run dev` (or `BACKEND_URL=http://127.0.0.1:8001`).
+3. Open **http://localhost:5180** (page title "Campus Customs ops desk"). `?ticket=102` opens a ticket directly.
 
-3. Open the URL Vite prints (normally http://localhost:5173). `?ticket=102` opens a ticket directly.
+Don't rely on Vite's default port: if 5173 is busy, Vite moves to the next free port, and an older app already on 5173 may be what you see. Without `BACKEND_PORT`, `/api` goes to port 8000, which may be a different app's server.
 
 ## Layout
 

@@ -865,3 +865,17 @@ None.
 > Record this follow-up in AI_prompts.md under Problem 11.
 
 **What was missing after the previous prompt:** The repository was published and publicly accessible, but it had not been checked path by path against the assignment's required file layout on GitHub itself, rather than in the local folder.
+
+### Follow-up prompt 3 (dashboard opened the HW4 app on port 5173)
+
+> I opened http://localhost:5173 from the GitHub README, but it shows my old HW4 Campus Customs shopping website, not the HW5 multi-agent operations dashboard.
+>
+> Our HW5 dashboard was previously running at http://localhost:5180 with the backend on port 8010.
+>
+> Investigate which processes are using ports 5173, 5180, 8000, and 8010, and verify that the README startup commands actually launch the HW5 dashboard from this repository.
+>
+> Don't modify or stop my HW4 app. If the README instructions are misleading, correct them and push the updated README and prompt log to GitHub.
+>
+> Don't change the databases or rerun any agents. Report the correct URL for HW5.
+
+**What was missing after the previous prompt:** The README used the default ports (backend 8000, dashboard "normally http://localhost:5173"). On a machine already running HW4 on those ports, the backend command fails, Vite silently moves to another port, and the dashboard's `/api` calls go to the HW4 backend, so following the README showed the wrong app.

@@ -99,12 +99,20 @@ It talks MCP over stdin/stdout, so it waits silently for a client. Stop it with 
 
 ## 5. Start the FastAPI backend
 
+This project uses **port 8010** for the backend and **port 5180** for the dashboard. They're not the defaults (8000 and 5173), so it won't collide with other local projects that use them. First check that both ports are free:
+
 ```bash
-cd backend
-../.venv/bin/uvicorn main:app --port 8000
+lsof -nP -iTCP:8010 -iTCP:5180 -sTCP:LISTEN
 ```
 
-Check that it's up at http://127.0.0.1:8000/api/health. If port 8000 is already in use (check with `lsof -nP -iTCP:8000 -sTCP:LISTEN`), use another port, e.g. `--port 8001`.
+If that prints anything, another program is using the port: pick other ports and use them consistently in steps 5–7.
+
+```bash
+cd backend
+../.venv/bin/uvicorn main:app --port 8010
+```
+
+Check that it's up: http://127.0.0.1:8010/api/health should return `"model": "gpt-6-luna"` and `"mcp_tools": 24`.
 
 ## 6. Start the React dashboard
 
@@ -112,17 +120,23 @@ In a second terminal:
 
 ```bash
 cd frontend
-npm run dev
+BACKEND_PORT=8010 npm run dev -- --port 5180 --strictPort
 ```
 
-Open the URL Vite prints (normally http://localhost:5173). If the backend isn't on port 8000, start it with `BACKEND_PORT=8001 npm run dev`. Vite forwards `/api` calls to the backend, so no keys reach the browser.
+Open **http://localhost:5180**. The page title is **"Campus Customs ops desk"**.
+
+- `BACKEND_PORT` tells Vite which backend to forward `/api` calls to (it defaults to 8000). If it's wrong, the dashboard can end up talking to a different app's server on that port.
+- `--strictPort` makes Vite stop with an error if 5180 is taken, instead of quietly switching to another port. Without it, `npm run dev` falls back to the next free port (5173, 5174, …), and an older app already running on 5173 may be what you see.
+- Check the dashboard is connected: http://localhost:5180/api/health should show the same `gpt-6-luna` / `24` response as step 5.
+
+Vite forwards `/api` calls to the backend, so no keys reach the browser.
 
 ## 7. Reset the database, then run all three tickets
 
 1. **Reset.** Use the Reset button in the dashboard header, or:
 
    ```bash
-   curl -X POST http://127.0.0.1:8000/api/reset -H 'Content-Type: application/json' -d '{"confirm": "RESET"}'
+   curl -X POST http://127.0.0.1:8010/api/reset -H 'Content-Type: application/json' -d '{"confirm": "RESET"}'
    ```
 
    This restores `data/campus_customs_new.db` from `data/campus_customs.db` (checked by hash), archives `payment_approvals.json` and `manager_events.json` to `output/approvals_archive/`, and adds a `database_reset` record to the audit trail. Checking goes back to **$3,400.00** and tickets 101, 102, and 103 are `open`.
