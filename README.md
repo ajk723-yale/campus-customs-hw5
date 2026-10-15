@@ -53,8 +53,8 @@ No records were added, removed, or reordered, and no ticket, approval, payment, 
 ## 1. Install
 
 ```bash
-git clone https://github.com/<your-account>/<this-repo>.git
-cd <this-repo>
+git clone https://github.com/ajk723-yale/campus-customs-hw5.git
+cd campus-customs-hw5
 
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
