@@ -819,3 +819,49 @@ None.
 > Don't reset the database, rerun agents, or change any ticket or financial records. Let me know the final GitHub URL.
 
 **What was missing after the previous prompt:** The secret scan was clean, but two record files still contained my local username in absolute paths, joke.txt was about to be published even though the assignment doesn't need it, and the repository had not been published yet.
+
+### Follow-up prompt 2 (verify the published file layout)
+
+> Verify that our published GitHub repository exactly follows the required file layout for Problem 11 below.
+>
+> ```
+> hw5/
+> ├── AI_prompts.md
+> ├── requirements.txt
+> ├── .env.example
+> ├── .gitignore
+> ├── .mcp.json
+> ├── README.md
+> ├── data/
+> │   ├── campus_customs.db
+> │   └── campus_customs_new.db
+> ├── mcp_server/
+> │   ├── server.py
+> │   └── README.md
+> ├── frontend/
+> ├── backend/
+> │   ├── main.py
+> │   ├── models.py
+> │   └── prompts/
+> │       ├── boss.md
+> │       ├── inventory.md
+> │       ├── accounting.md
+> │       ├── facilities.md
+> │       └── customer_service.md
+> └── output/
+>     ├── harness.md
+>     ├── mcp_smoke.json
+>     ├── desk_tickets.html
+>     ├── design.md
+>     ├── resolved_tickets.json
+>     ├── resolved_board.html
+>     ├── audit_trail.json
+>     └── github_url.txt
+> ```
+>
+> Compare every required path against the actual published repository, not just the local files.
+> Also verify that README.md explains how to reset the working database, start the MCP server, start the FastAPI backend, and start the React dashboard.
+> Report any missing or misplaced files. Don’t modify anything unless necessary, and ask me before making changes.
+> Record this follow-up in AI_prompts.md under Problem 11.
+
+**What was missing after the previous prompt:** The repository was published and publicly accessible, but it had not been checked path by path against the assignment's required file layout on GitHub itself, rather than in the local folder.
