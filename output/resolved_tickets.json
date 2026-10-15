@@ -1,0 +1,735 @@
+{
+  "generated_at": "2026-10-15T02:49:03+00:00",
+  "sources": [
+    "output/audit_trail.json",
+    "output/payment_approvals.json",
+    "output/manager_events.json",
+    "data/campus_customs_new.db"
+  ],
+  "shop_date": "2026-08-31",
+  "database_reset": {
+    "timestamp": "2026-10-14T21:23:16.783+00:00",
+    "starting_checking_balance": 3400.0
+  },
+  "labels": {
+    "simulated": "manager_events with simulated=true stand in for customer/vendor actions in this fictional shop; they are not agent actions or financial transactions",
+    "financial_transactions": "only rows in the payments table moved cash",
+    "agent_contributions": "each agent's most recent summary for the ticket, with the run it came from (may be earlier than the resolving run)",
+    "fulfilment": "quantity handed over to the customer per manager fulfilment events; unfulfilled quantities are follow-ups, not completed transactions"
+  },
+  "cash": {
+    "starting_balance": 3400.0,
+    "movements": [
+      {
+        "paid_at": "2026-10-14T21:29:31+00:00",
+        "ticket_id": 102,
+        "kind": "rent",
+        "approval_id": "PAY-58EB2241",
+        "amount": 2400.0,
+        "payee": "Elm City Properties",
+        "approved_by": "Kohei",
+        "reason": "Rent for Chapel Street shop; Ticket 102 rent notice: $2,400 due 2026-09-02; request human approval for the lease payment. Checking cash is $3,400, sufficient for rent alone.",
+        "balance_after": 1000.0
+      },
+      {
+        "paid_at": "2026-10-14T21:35:41+00:00",
+        "ticket_id": 101,
+        "kind": "invoice",
+        "approval_id": "PAY-6B7FD0D1",
+        "amount": 840.0,
+        "payee": "Bulldog Print Co",
+        "approved_by": "Kohei",
+        "reason": "Rush reprint CC-TEE-WHITE S; Ticket 101 is an open customer order for the Bulldog tee in size S; invoice 501 funds the rush reprint, is $840 and 3 days overdue as of 2026-08-31. Recommend prioritizing this order-linked, overdue vendor invoice now; checking has $1,000, so paying it would leave $160 and rent of $2,400 is due 2026-09-02 and cannot also be covered.",
+        "balance_after": 160.0
+      }
+    ],
+    "ending_balance_computed": 160.0,
+    "cash_accounts_checking": 160.0,
+    "reconciled": true,
+    "no_cash_movement": [
+      {
+        "approval_id": "BUY-76936C1B",
+        "ticket_id": 101,
+        "amount": 8.0,
+        "status": "received",
+        "description": "Restock 1 x Classic Bulldog Tee (S) from Bulldog Print Co",
+        "note": "Order and receipt recorded as simulated manager events; placed before the bill-on-order rule, so no vendor invoice was created. No cash moved."
+      },
+      {
+        "approval_id": "BUY-9688DD9C",
+        "ticket_id": 103,
+        "amount": 264.0,
+        "status": "rejected",
+        "description": "Restock 12 x Basic Hoodie Big Yale (M) from Bulldog Print Co",
+        "note": "Rejected by a person. No cash moved."
+      },
+      {
+        "approval_id": "BUY-FF090480",
+        "ticket_id": 103,
+        "amount": 264.0,
+        "status": "cancelled",
+        "description": "Restock 12 x Basic Hoodie Big Yale (M) from Bulldog Print Co",
+        "note": "Approved, then cancelled by a person before ordering: Insufficient checking balance: $264 restock cost exceeds $160 available. No cash moved."
+      },
+      {
+        "event_id": "EVT-81D3B27A",
+        "ticket_id": 103,
+        "what": "pricing decision",
+        "note": "quote only; no revenue recorded"
+      }
+    ]
+  },
+  "tickets": [
+    {
+      "ticket_id": 101,
+      "type": "customer_order",
+      "requester": "Tauhid Zaman",
+      "subject": "Bulldog tee",
+      "final_status": "resolved",
+      "resolved_at": "2026-10-15T01:30:45.972+00:00",
+      "resolution_rule": "Resolved: Recommend resolving the order: the recorded simulated customer response was to wait, the approved purchase was received, and the requested one tee was fulfilled (quantity still to fulfil: 0).",
+      "resolved_by_run": "run-a86189ca4702",
+      "outcome": "Recommend resolving the order: the recorded simulated customer response was to wait, the approved purchase was received, and the requested one tee was fulfilled (quantity still to fulfil: 0).",
+      "boss_summary": "Ticket 101 is fully handled: the customer agreed to wait, one size-S tee was received and fulfilled, and invoice 501 is already paid. These customer/vendor events were recorded as simulated; no new payment or purchase request is needed.",
+      "follow_ups": [],
+      "risks": [
+        "The purchase event notes invoice 501 was also for a rush reprint of the same SKU and size, with a possible duplicate-purchase warning acknowledged. Consider a separate follow-up to verify whether the new purchase was redundant; this does not change the completed fulfillment of ticket 101."
+      ],
+      "agents_involved": [
+        "boss",
+        "inventory",
+        "customer_service",
+        "accounting"
+      ],
+      "first_agent_delegated_to": "inventory",
+      "delegations": [
+        "boss -> inventory",
+        "boss -> customer_service",
+        "boss -> accounting",
+        "customer_service -> inventory",
+        "customer_service -> accounting"
+      ],
+      "mcp_tools_by_agent": {
+        "boss": [
+          "get_ticket",
+          "get_shop_date",
+          "list_payment_approvals",
+          "get_ticket_updates"
+        ],
+        "accounting": [
+          "get_ticket",
+          "get_invoice_info",
+          "get_shop_date",
+          "get_cash_position",
+          "list_payment_approvals",
+          "request_payment_approval",
+          "execute_payment",
+          "get_rent_info",
+          "get_ticket_updates"
+        ],
+        "inventory": [
+          "get_ticket",
+          "get_product_info",
+          "list_vendors",
+          "get_shop_date",
+          "get_product_sizes",
+          "get_vendor_status",
+          "request_purchase_approval",
+          "get_ticket_updates",
+          "get_invoice_info"
+        ],
+        "customer_service": [
+          "get_ticket",
+          "get_shop_date",
+          "get_product_info",
+          "get_ticket_updates"
+        ]
+      },
+      "transaction_breakdown": {
+        "completed_financial_transactions": [
+          {
+            "approval_id": "PAY-6B7FD0D1",
+            "kind": "invoice",
+            "amount": 840.0,
+            "payee": "Bulldog Print Co",
+            "paid_at": "2026-10-14T21:35:41+00:00"
+          }
+        ],
+        "non_cash_records": [
+          {
+            "approval_id": "BUY-76936C1B",
+            "ticket_id": 101,
+            "amount": 8.0,
+            "status": "received",
+            "description": "Restock 1 x Classic Bulldog Tee (S) from Bulldog Print Co",
+            "note": "Order and receipt recorded as simulated manager events; placed before the bill-on-order rule, so no vendor invoice was created. No cash moved."
+          }
+        ],
+        "simulated_events": [
+          "customer response (EVT-E1720E21)",
+          "purchase order (EVT-47532142)",
+          "stock receipt (EVT-A297928B)",
+          "fulfilment (EVT-2A25C1A1)"
+        ],
+        "fulfilment": "Fulfilled 1/1 (CC-TEE-WHITE S) via a simulated fulfilment event; no sale or revenue recorded."
+      },
+      "agent_contributions": {
+        "accounting": {
+          "run_id": "run-190bd8b1be01",
+          "summary": "Invoice 501 for $840 is already paid, so no further payment is needed for it; however, the separate $8 restock remains only approved, and its duplicate warning must be checked before anyone orders or promises delivery. Ticket 101 is still open with zero fulfilled, and checking has $160 against $2,400 rent due September 2, so the $8 purchase is affordable alone but cash is not sufficient for all listed obligations."
+        },
+        "inventory": {
+          "run_id": "run-f0944d63e28b",
+          "summary": "Current stock lookup reports 0 CC-TEE-WHITE size S, against ticket 101\u2019s need for 1; the prior receipt and fulfilment events are simulated and do not establish physical stock movement. I did not file a new approval: paid Invoice 501 is described as a rush reprint of this exact SKU and size, so a person should confirm whether it covers actual goods before creating a potentially duplicate restock."
+        },
+        "customer_service": {
+          "run_id": "run-f0944d63e28b",
+          "summary": "As of 2026-08-31, the recorded ticket shows the customer accepted waiting, one tee received and fulfilled, and 0 quantity remaining, so no further customer-service action is indicated. These events are explicitly simulated, however, so they do not establish that a real customer was contacted or a real tee was handed over; confirm actual-world completion before treating the order as closed. No new payment or restock request is indicated by the current recorded status."
+        },
+        "boss": {
+          "run_id": "run-a86189ca4702",
+          "summary": "Ticket 101 is fully handled: the customer agreed to wait, one size-S tee was received and fulfilled, and invoice 501 is already paid. These customer/vendor events were recorded as simulated; no new payment or purchase request is needed."
+        }
+      },
+      "human_approvals": [
+        {
+          "approval_id": "PAY-6B7FD0D1",
+          "kind": "invoice",
+          "amount": 840.0,
+          "status": "executed",
+          "approved_by": "Kohei",
+          "approved_at": "2026-10-14T21:35:32+00:00",
+          "payment_id": 2,
+          "description": "Rush reprint CC-TEE-WHITE S"
+        },
+        {
+          "approval_id": "BUY-76936C1B",
+          "kind": "purchase",
+          "amount": 8.0,
+          "status": "received",
+          "approved_by": "Kohei",
+          "approved_at": "2026-10-14T21:39:22+00:00",
+          "ordered_by": "Kohei",
+          "order_simulated": true,
+          "received_qty": 1,
+          "description": "Restock 1 x Classic Bulldog Tee (S) from Bulldog Print Co"
+        }
+      ],
+      "manager_events": [
+        {
+          "event_id": "EVT-E1720E21",
+          "kind": "customer_response",
+          "simulated": true,
+          "recorded_by": "Kohei",
+          "recorded_at": "2026-10-15T01:18:11+00:00",
+          "basis": "Hypothetical customer response for Problem 9 testing; no real customer was contacted.",
+          "details": {
+            "choice": "wait",
+            "summary": "Customer agrees to wait for size S (simulated).",
+            "channel": "simulated"
+          }
+        },
+        {
+          "event_id": "EVT-47532142",
+          "kind": "purchase_order",
+          "simulated": true,
+          "recorded_by": "Kohei",
+          "recorded_at": "2026-10-15T01:19:55+00:00",
+          "basis": "Simulated order for Problem 9. Invoice 501 may cover the same item, but this has not been verified. No real vendor was contacted.",
+          "details": {
+            "sku": "CC-TEE-WHITE",
+            "size": "S",
+            "quantity": 1,
+            "estimated_cost": 8.0,
+            "vendor": "Bulldog Print Co",
+            "vendor_reference": null,
+            "expected_arrival": "2026-09-05",
+            "cash_warning": null,
+            "duplicate_warnings": [
+              {
+                "invoice_id": 501,
+                "amount": 840.0,
+                "status": "paid",
+                "description": "Rush reprint CC-TEE-WHITE S",
+                "message": "Invoice 501 (paid) is 'Rush reprint CC-TEE-WHITE S' from the same vendor. This purchase may duplicate it; a person should check."
+              }
+            ],
+            "acknowledged": {
+              "cash_warning": false,
+              "duplicate_warning": true
+            },
+            "cash_changed": false
+          }
+        },
+        {
+          "event_id": "EVT-A297928B",
+          "kind": "stock_receipt",
+          "simulated": true,
+          "recorded_by": "Kohei",
+          "recorded_at": "2026-10-15T01:21:01+00:00",
+          "basis": "Simulated delivery for Problem 9 testing. No real goods were received.",
+          "details": {
+            "sku": "CC-TEE-WHITE",
+            "size": "S",
+            "quantity": 1,
+            "source_kind": "purchase_order",
+            "qty_after": 1,
+            "cash_changed": false
+          }
+        },
+        {
+          "event_id": "EVT-2A25C1A1",
+          "kind": "fulfilment",
+          "simulated": true,
+          "recorded_by": "Kohei",
+          "recorded_at": "2026-10-15T01:22:09+00:00",
+          "basis": "Simulated fulfilment for Problem 9 testing. No real item was handed over.",
+          "details": {
+            "sku": "CC-TEE-WHITE",
+            "size": "S",
+            "quantity": 1,
+            "qty_after": 0,
+            "fulfilled_total": 1,
+            "ordered_qty": 1,
+            "revenue_recorded": false,
+            "cash_changed": false
+          }
+        }
+      ],
+      "runs": [
+        {
+          "run_id": "run-bdee8fa534a6",
+          "kind": "team run",
+          "entry_agent": "boss",
+          "started": "2026-10-14T21:31:22.887+00:00",
+          "total_tokens": 41189,
+          "delegations": [
+            "boss -> inventory",
+            "boss -> customer_service",
+            "boss -> accounting",
+            "customer_service -> inventory"
+          ]
+        },
+        {
+          "run_id": "run-b5d616b25668",
+          "kind": "payment execution",
+          "entry_agent": "accounting",
+          "started": "2026-10-14T21:35:32.578+00:00",
+          "total_tokens": 14846,
+          "delegations": []
+        },
+        {
+          "run_id": "run-d3b9c6264a10",
+          "kind": "team run",
+          "entry_agent": "boss",
+          "started": "2026-10-14T21:37:46.806+00:00",
+          "total_tokens": 43154,
+          "delegations": [
+            "boss -> inventory",
+            "boss -> customer_service",
+            "boss -> accounting",
+            "customer_service -> inventory"
+          ]
+        },
+        {
+          "run_id": "run-2fe93b1d708f",
+          "kind": "team run",
+          "entry_agent": "boss",
+          "started": "2026-10-14T21:39:41.752+00:00",
+          "total_tokens": 39886,
+          "delegations": [
+            "boss -> inventory",
+            "boss -> customer_service",
+            "boss -> accounting",
+            "customer_service -> inventory"
+          ]
+        },
+        {
+          "run_id": "run-0dcc910c122d",
+          "kind": "team run",
+          "entry_agent": "boss",
+          "started": "2026-10-15T01:04:36.297+00:00",
+          "total_tokens": 69113,
+          "delegations": [
+            "boss -> inventory",
+            "boss -> customer_service",
+            "customer_service -> inventory",
+            "customer_service -> accounting"
+          ]
+        },
+        {
+          "run_id": "run-190bd8b1be01",
+          "kind": "team run",
+          "entry_agent": "boss",
+          "started": "2026-10-15T01:13:56.959+00:00",
+          "total_tokens": 69113,
+          "delegations": [
+            "boss -> inventory",
+            "boss -> customer_service",
+            "customer_service -> inventory",
+            "customer_service -> accounting"
+          ]
+        },
+        {
+          "run_id": "run-f0944d63e28b",
+          "kind": "team run",
+          "entry_agent": "boss",
+          "started": "2026-10-15T01:22:16.962+00:00",
+          "total_tokens": 59657,
+          "delegations": [
+            "boss -> customer_service",
+            "boss -> inventory"
+          ]
+        },
+        {
+          "run_id": "run-a86189ca4702",
+          "kind": "team run",
+          "entry_agent": "boss",
+          "started": "2026-10-15T01:30:43.548+00:00",
+          "total_tokens": 11438,
+          "delegations": []
+        }
+      ]
+    },
+    {
+      "ticket_id": 102,
+      "type": "rent_notice",
+      "requester": "Elm City Properties",
+      "subject": "Rent due",
+      "final_status": "resolved",
+      "resolved_at": "2026-10-14T21:29:43.041+00:00",
+      "resolution_rule": "Resolved: PAY-58EB2241 executed and nothing else was needed.",
+      "resolved_by_run": "run-c73c4c25b533",
+      "outcome": "Recommend paying the $2,400 rent to Elm City Properties by the due date, subject to human approval of PAY-58EB2241. Accounting reports $3,400 in checking, so the rent is affordable on its own.",
+      "boss_summary": "Ticket 102 rent is unpaid and due September 2. Accounting filed a human approval request; no payment has been made.",
+      "follow_ups": [
+        "Human approves or rejects PAY-58EB2241.",
+        "If approved, Accounting executes the payment before September 2 and confirms completion."
+      ],
+      "risks": [
+        "Accounting reports a separate $840 overdue invoice. Paying both that invoice and rent would leave $160 in checking; this ticket-specific plan does not include that invoice."
+      ],
+      "agents_involved": [
+        "boss",
+        "facilities",
+        "accounting"
+      ],
+      "first_agent_delegated_to": "facilities",
+      "delegations": [
+        "boss -> facilities",
+        "facilities -> accounting",
+        "boss -> accounting"
+      ],
+      "mcp_tools_by_agent": {
+        "boss": [
+          "get_ticket",
+          "get_shop_date",
+          "list_payment_approvals"
+        ],
+        "facilities": [
+          "get_shop_date",
+          "get_ticket",
+          "get_cash_position",
+          "get_rent_info"
+        ],
+        "accounting": [
+          "get_shop_date",
+          "get_rent_info",
+          "get_cash_position",
+          "get_ticket",
+          "list_open_invoices",
+          "list_payment_approvals",
+          "request_payment_approval",
+          "execute_payment"
+        ]
+      },
+      "transaction_breakdown": {
+        "completed_financial_transactions": [
+          {
+            "approval_id": "PAY-58EB2241",
+            "kind": "rent",
+            "amount": 2400.0,
+            "payee": "Elm City Properties",
+            "paid_at": "2026-10-14T21:29:31+00:00"
+          }
+        ],
+        "non_cash_records": [],
+        "simulated_events": [],
+        "fulfilment": "No product to fulfil (payment ticket)."
+      },
+      "agent_contributions": {
+        "accounting": {
+          "run_id": "run-c73c4c25b533",
+          "summary": "PAY-58EB2241 was confirmed approved by Kohei and successfully executed as the $2,400 rent payment to Elm City Properties. The payment reduced checking to $1,000; no other requests or payments were made."
+        },
+        "facilities": {
+          "run_id": "run-1edbc311e0d6",
+          "summary": "Ticket 102\u2019s notice date matches lease 1: $2,400 is due September 2, 2026, two days after the shop date, and no rent payment is recorded. Treat this as urgent: Accounting confirms the $3,400 checking balance covers rent and the $840 overdue invoice, leaving $160 if both are paid; prioritize arranging rent by the due date through Accounting and required human approval, without making a payment here."
+        },
+        "boss": {
+          "run_id": "run-1edbc311e0d6",
+          "summary": "Ticket 102 rent is unpaid and due September 2. Accounting filed a human approval request; no payment has been made."
+        }
+      },
+      "human_approvals": [
+        {
+          "approval_id": "PAY-58EB2241",
+          "kind": "rent",
+          "amount": 2400.0,
+          "status": "executed",
+          "approved_by": "Kohei",
+          "approved_at": "2026-10-14T21:29:25+00:00",
+          "payment_id": 1,
+          "description": "Rent for Chapel Street shop"
+        }
+      ],
+      "manager_events": [],
+      "runs": [
+        {
+          "run_id": "run-1edbc311e0d6",
+          "kind": "team run",
+          "entry_agent": "boss",
+          "started": "2026-10-14T21:26:02.894+00:00",
+          "total_tokens": 36333,
+          "delegations": [
+            "boss -> facilities",
+            "facilities -> accounting",
+            "boss -> accounting"
+          ]
+        },
+        {
+          "run_id": "run-c73c4c25b533",
+          "kind": "payment execution",
+          "entry_agent": "accounting",
+          "started": "2026-10-14T21:29:25.520+00:00",
+          "total_tokens": 10407,
+          "delegations": []
+        }
+      ]
+    },
+    {
+      "ticket_id": 103,
+      "type": "price_override",
+      "requester": "Yale AI Club",
+      "subject": "Bulk hoodie discount",
+      "final_status": "resolved",
+      "resolved_at": "2026-10-15T02:20:47.965+00:00",
+      "resolution_rule": "Resolved: Honor the manager-approved 10% discount at $52.20 per hoodie for 20 (above the $22 unit cost). The quote is not a sale or recorded revenue. Reply draft accurately explains that only 8 are available and the remaining 12 are not on order.",
+      "resolved_by_run": "run-710a7503bb7f",
+      "outcome": "Honor the manager-approved 10% discount at $52.20 per hoodie for 20 (above the $22 unit cost). The quote is not a sale or recorded revenue. Reply draft accurately explains that only 8 are available and the remaining 12 are not on order.",
+      "boss_summary": "Ticket 103: the approved 10% quote is $52.20 each ($1,044 for 20). Customer Service drafted a reply noting only 8 size-M hoodies are on hand and no restock is in progress. The earlier purchase was canceled for insufficient funds; no repeat request was filed. The recorded pricing decision and purchase cancellation were non-simulated; no simulated customer or vendor events were recorded.",
+      "follow_ups": [
+        "A human may review and send the drafted reply; await Yale AI Club's response. Do not imply that all 20 are available or that a restock is underway.",
+        "If a restock is reconsidered, first address the recorded funding shortfall ($264 cost versus $160 checking) and obtain human purchase approval. The prior purchase was canceled, so no order is in progress."
+      ],
+      "risks": [
+        "Only 8 of 20 requested size-M hoodies are currently available. The 12-unit restock is not in progress because the prior $264 purchase was canceled when only $160 was available. The supplier's reported 5-day lead time applies only if a new order is later authorized and placed."
+      ],
+      "agents_involved": [
+        "boss",
+        "inventory",
+        "customer_service",
+        "accounting"
+      ],
+      "first_agent_delegated_to": "inventory",
+      "delegations": [
+        "boss -> inventory",
+        "boss -> customer_service",
+        "customer_service -> inventory",
+        "boss -> accounting"
+      ],
+      "mcp_tools_by_agent": {
+        "boss": [
+          "get_ticket",
+          "get_shop_date",
+          "get_ticket_updates",
+          "list_payment_approvals"
+        ],
+        "inventory": [
+          "get_ticket",
+          "get_shop_date",
+          "get_product_info",
+          "list_vendors",
+          "get_vendor_status",
+          "request_purchase_approval",
+          "get_product_sizes",
+          "get_ticket_updates"
+        ],
+        "customer_service": [
+          "get_ticket",
+          "get_shop_date",
+          "get_product_info",
+          "quote_price",
+          "get_ticket_updates"
+        ],
+        "accounting": [
+          "get_ticket",
+          "get_ticket_updates",
+          "list_open_invoices",
+          "get_cash_position"
+        ]
+      },
+      "transaction_breakdown": {
+        "completed_financial_transactions": [],
+        "non_cash_records": [
+          {
+            "approval_id": "BUY-9688DD9C",
+            "ticket_id": 103,
+            "amount": 264.0,
+            "status": "rejected",
+            "description": "Restock 12 x Basic Hoodie Big Yale (M) from Bulldog Print Co",
+            "note": "Rejected by a person. No cash moved."
+          },
+          {
+            "approval_id": "BUY-FF090480",
+            "ticket_id": 103,
+            "amount": 264.0,
+            "status": "cancelled",
+            "description": "Restock 12 x Basic Hoodie Big Yale (M) from Bulldog Print Co",
+            "note": "Approved, then cancelled by a person before ordering: Insufficient checking balance: $264 restock cost exceeds $160 available. No cash moved."
+          },
+          {
+            "event_id": "EVT-81D3B27A",
+            "status": "approved",
+            "amount": null,
+            "description": "Pricing decision: 10.0% off, $52.20 each",
+            "note": "Quote only; no sale, revenue, or cash recorded."
+          }
+        ],
+        "simulated_events": [],
+        "fulfilment": "Not fulfilled: 0/20 handed over (CC-HOOD-NAVY M). 8 on hand; no restock on order (the 12-unit restock was rejected/cancelled). Resolved as a price request; delivery is a follow-up."
+      },
+      "agent_contributions": {
+        "inventory": {
+          "run_id": "run-710a7503bb7f",
+          "summary": "Ticket 103 has 8 of 20 requested M hoodies on hand, leaving a 12-unit shortfall. Bulldog Print Co is unrestricted and has a 5-day lead time\u2014hypothetically Sept 5, 2026 from the shop date, only if a new order is later authorized and placed\u2014but the prior 12-unit purchase was rejected and its approved follow-up canceled because $264 exceeded the $160 checking balance, so it should not be resubmitted absent changed circumstances; size L has 14 on hand as a possible customer-approved alternative. The recorded pricing approval and cancellation are marked non-simulated; there are no simulated customer/vendor events in the updates."
+        },
+        "customer_service": {
+          "run_id": "run-710a7503bb7f",
+          "summary": "Drafted a reply for Yale AI Club with the manager-approved 10% quote ($52.20 each; $1,044 for 20), while clearly stating that only 8 size-M hoodies are on hand and no restock is in progress. The 12-unit purchase was canceled for insufficient funds; the pricing approval and cancellation are recorded as non-simulated, and there are no simulated customer/vendor events on this ticket. Boss follow-up is needed before any restock is pursued; the 5-day lead time is conditional, not a delivery promise."
+        },
+        "boss": {
+          "run_id": "run-710a7503bb7f",
+          "summary": "Ticket 103: the approved 10% quote is $52.20 each ($1,044 for 20). Customer Service drafted a reply noting only 8 size-M hoodies are on hand and no restock is in progress. The earlier purchase was canceled for insufficient funds; no repeat request was filed. The recorded pricing decision and purchase cancellation were non-simulated; no simulated customer or vendor events were recorded."
+        },
+        "accounting": {
+          "run_id": "run-031b9ded49b4",
+          "summary": "No open vendor invoice from Bulldog Print Co is restricting a new purchase: the open-invoice list is empty, and ticket 103 has no linked or unpaid vendor invoices. There is no ticket-linked payment to recommend or file; its Bulldog Print Co purchase request for $264 was rejected, not converted into an invoice. Checking cash is $160, and no payment was requested."
+        }
+      },
+      "human_approvals": [
+        {
+          "approval_id": "BUY-9688DD9C",
+          "kind": "purchase",
+          "amount": 264.0,
+          "status": "rejected",
+          "rejected_by": "Kohei",
+          "rejected_at": "2026-10-15T02:00:56+00:00",
+          "description": "Restock 12 x Basic Hoodie Big Yale (M) from Bulldog Print Co"
+        },
+        {
+          "approval_id": "BUY-FF090480",
+          "kind": "purchase",
+          "amount": 264.0,
+          "status": "cancelled",
+          "approved_by": "Kohei",
+          "approved_at": "2026-10-15T02:15:58+00:00",
+          "cancelled_by": "Kohei",
+          "cancel_reason": "Insufficient checking balance: $264 restock cost exceeds $160 available.",
+          "description": "Restock 12 x Basic Hoodie Big Yale (M) from Bulldog Print Co"
+        }
+      ],
+      "manager_events": [
+        {
+          "event_id": "EVT-81D3B27A",
+          "kind": "pricing_decision",
+          "simulated": false,
+          "recorded_by": "Kohei",
+          "recorded_at": "2026-10-15T02:04:02+00:00",
+          "basis": "Approved based on the agent's recommendation: $52.20 per hoodie is above the $22 unit cost.",
+          "details": {
+            "decision": "approved",
+            "sku": "CC-HOOD-NAVY",
+            "size": "M",
+            "quantity": 20,
+            "discount_pct": 10.0,
+            "list_price": 58.0,
+            "unit_cost": 22.0,
+            "unit_price": 52.2,
+            "margin_per_unit": 30.2,
+            "note": "Approve the agent's proposed 10% bulk discount. The price of $52.20 remains above the $22 unit cost.",
+            "revenue_recorded": false
+          }
+        },
+        {
+          "event_id": "EVT-7C4B5F5C",
+          "kind": "purchase_cancelled",
+          "simulated": false,
+          "recorded_by": "Kohei",
+          "recorded_at": "2026-10-15T02:17:44+00:00",
+          "basis": "Manager decision recorded in the dashboard",
+          "details": {
+            "reason": "Insufficient checking balance: $264 restock cost exceeds $160 available.",
+            "sku": "CC-HOOD-NAVY",
+            "size": "M",
+            "quantity": 12
+          }
+        }
+      ],
+      "runs": [
+        {
+          "run_id": "run-3a469b287291",
+          "kind": "team run",
+          "entry_agent": "boss",
+          "started": "2026-10-14T21:53:06.005+00:00",
+          "total_tokens": 37288,
+          "delegations": [
+            "boss -> inventory",
+            "boss -> customer_service",
+            "customer_service -> inventory"
+          ]
+        },
+        {
+          "run_id": "run-1606d845a642",
+          "kind": "team run",
+          "entry_agent": "boss",
+          "started": "2026-10-15T02:01:05.595+00:00",
+          "total_tokens": 37680,
+          "delegations": [
+            "boss -> inventory",
+            "boss -> customer_service"
+          ]
+        },
+        {
+          "run_id": "run-031b9ded49b4",
+          "kind": "team run",
+          "entry_agent": "boss",
+          "started": "2026-10-15T02:04:54.889+00:00",
+          "total_tokens": 77090,
+          "delegations": [
+            "boss -> inventory",
+            "boss -> customer_service",
+            "boss -> accounting",
+            "customer_service -> inventory"
+          ]
+        },
+        {
+          "run_id": "run-710a7503bb7f",
+          "kind": "team run",
+          "entry_agent": "boss",
+          "started": "2026-10-15T02:17:51.764+00:00",
+          "total_tokens": 90737,
+          "delegations": [
+            "boss -> inventory",
+            "boss -> customer_service",
+            "customer_service -> inventory"
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "run-190bd8b1be01 (Ticket 101) completed a 19-request team run in 5.5 s with token usage identical to run-0dcc910c122d. Both are real, separately triggered runs with distinct records, but the second run's model responses were most likely served from the Portkey gateway's response cache (inference from timing; nothing in this project caches). Both are kept exactly as logged.",
+    "BUY-76936C1B was ordered and received through simulated manager events before the bill-on-order rule existed, so no vendor invoice exists for its $8 cost."
+  ]
+}

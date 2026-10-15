@@ -1,0 +1,125 @@
+{
+  "description": "Problem 4 smoke test: the four campus-customs MCP tool calls made through Codex, copied from the Codex session log and checked against data/campus_customs_new.db.",
+  "codex_session": {
+    "log_file": "<home>/.codex/sessions/2026/10/14/rollout-2026-10-14T00-50-17-01a138bf-35d7-7bb1-92d8-a573e08ab2eb.jsonl",
+    "session_id": "01a138bf-35d7-7bb1-92d8-a573e08ab2eb",
+    "started_at": "2026-10-14T04:50:17.709Z",
+    "cwd": "<project-root>",
+    "originator": "codex-tui",
+    "cli_version": "0.162.0-alpha.17.2",
+    "model_provider": "portkey",
+    "model": [
+      "gpt-6-luna"
+    ]
+  },
+  "database": "data/campus_customs_new.db",
+  "all_calls_completed": true,
+  "all_results_match_database": true,
+  "tests": [
+    {
+      "prompt": "Using the campus-customs MCP server, please invoke these four tool calls:\n\n1. get_product_info(\"CC-TEE-WHITE\", \"S\")\n2. get_product_info(\"CC-HOOD-NAVY\", \"M\")\n3. get_invoice_info(501)\n4. get_rent_info(1)\n\nShow me the actual response from each MCP tool. Do not substitute direct Python calls or SQL queries.",
+      "purpose": "Check the T-shirt inventory (ticket 101).",
+      "server": "campus-customs",
+      "tool": "get_product_info",
+      "arguments": {
+        "sku": "CC-TEE-WHITE",
+        "size": "S"
+      },
+      "codex_call_id": "exec-6614305e-d6b5-4667-8e44-34c5a0127104",
+      "status": "completed",
+      "is_error": false,
+      "result": {
+        "found": true,
+        "sku": "CC-TEE-WHITE",
+        "name": "Classic Bulldog Tee",
+        "size": "S",
+        "qty": 0,
+        "location": "Aisle B",
+        "unit_cost": 8.0,
+        "list_price": 28.0
+      },
+      "matches_database": true,
+      "mismatched_fields": []
+    },
+    {
+      "prompt": "Using the campus-customs MCP server, please invoke these four tool calls:\n\n1. get_product_info(\"CC-TEE-WHITE\", \"S\")\n2. get_product_info(\"CC-HOOD-NAVY\", \"M\")\n3. get_invoice_info(501)\n4. get_rent_info(1)\n\nShow me the actual response from each MCP tool. Do not substitute direct Python calls or SQL queries.",
+      "purpose": "Check the hoodie inventory, cost, and selling price (ticket 103).",
+      "server": "campus-customs",
+      "tool": "get_product_info",
+      "arguments": {
+        "sku": "CC-HOOD-NAVY",
+        "size": "M"
+      },
+      "codex_call_id": "exec-c9bb6ca9-90c3-4268-8b70-9d3b6aa211d1",
+      "status": "completed",
+      "is_error": false,
+      "result": {
+        "found": true,
+        "sku": "CC-HOOD-NAVY",
+        "name": "Basic Hoodie Big Yale",
+        "size": "M",
+        "qty": 8,
+        "location": "Aisle A",
+        "unit_cost": 22.0,
+        "list_price": 58.0
+      },
+      "matches_database": true,
+      "mismatched_fields": []
+    },
+    {
+      "prompt": "Using the campus-customs MCP server, please invoke these four tool calls:\n\n1. get_product_info(\"CC-TEE-WHITE\", \"S\")\n2. get_product_info(\"CC-HOOD-NAVY\", \"M\")\n3. get_invoice_info(501)\n4. get_rent_info(1)\n\nShow me the actual response from each MCP tool. Do not substitute direct Python calls or SQL queries.",
+      "purpose": "Check the unpaid invoice and vendor lead time (ticket 101).",
+      "server": "campus-customs",
+      "tool": "get_invoice_info",
+      "arguments": {
+        "invoice_id": 501
+      },
+      "codex_call_id": "exec-3f6c24f8-5612-41d7-9b5a-38137204d59d",
+      "status": "completed",
+      "is_error": false,
+      "result": {
+        "found": true,
+        "invoice_id": 501,
+        "amount": 840.0,
+        "due_date": "2026-08-28",
+        "status": "open",
+        "description": "Rush reprint CC-TEE-WHITE S",
+        "vendor_id": 1,
+        "vendor_name": "Bulldog Print Co",
+        "vendor_specialty": "apparel reprint",
+        "lead_days": 5
+      },
+      "matches_database": true,
+      "mismatched_fields": []
+    },
+    {
+      "prompt": "Using the campus-customs MCP server, please invoke these four tool calls:\n\n1. get_product_info(\"CC-TEE-WHITE\", \"S\")\n2. get_product_info(\"CC-HOOD-NAVY\", \"M\")\n3. get_invoice_info(501)\n4. get_rent_info(1)\n\nShow me the actual response from each MCP tool. Do not substitute direct Python calls or SQL queries.",
+      "purpose": "Check the rent obligation and available cash (ticket 102).",
+      "server": "campus-customs",
+      "tool": "get_rent_info",
+      "arguments": {
+        "lease_id": 1
+      },
+      "codex_call_id": "exec-b91a7efb-8870-4a7a-aa90-cf69766d436a",
+      "status": "completed",
+      "is_error": false,
+      "result": {
+        "found": true,
+        "lease_id": 1,
+        "space_name": "Chapel Street shop",
+        "landlord": "Elm City Properties",
+        "monthly_rent": 2400.0,
+        "next_due": "2026-09-02",
+        "notes": null,
+        "rent_payments": [],
+        "checking_account": {
+          "name": "checking",
+          "balance": 3400.0,
+          "date": "2026-08-31"
+        }
+      },
+      "matches_database": true,
+      "mismatched_fields": []
+    }
+  ]
+}

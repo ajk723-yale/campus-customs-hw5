@@ -1,0 +1,146 @@
+[
+  {
+    "event_id": "EVT-E1720E21",
+    "kind": "customer_response",
+    "ticket_id": 101,
+    "recorded_by": "Kohei",
+    "recorded_at": "2026-10-15T01:18:11+00:00",
+    "shop_date": "2026-08-31",
+    "simulated": true,
+    "basis": "Hypothetical customer response for Problem 9 testing; no real customer was contacted.",
+    "details": {
+      "choice": "wait",
+      "summary": "Customer agrees to wait for size S (simulated).",
+      "channel": "simulated"
+    },
+    "refs": {},
+    "source": "manager"
+  },
+  {
+    "event_id": "EVT-47532142",
+    "kind": "purchase_order",
+    "ticket_id": 101,
+    "recorded_by": "Kohei",
+    "recorded_at": "2026-10-15T01:19:55+00:00",
+    "shop_date": "2026-08-31",
+    "simulated": true,
+    "basis": "Simulated order for Problem 9. Invoice 501 may cover the same item, but this has not been verified. No real vendor was contacted.",
+    "details": {
+      "sku": "CC-TEE-WHITE",
+      "size": "S",
+      "quantity": 1,
+      "estimated_cost": 8.0,
+      "vendor": "Bulldog Print Co",
+      "vendor_reference": null,
+      "expected_arrival": "2026-09-05",
+      "cash_warning": null,
+      "duplicate_warnings": [
+        {
+          "invoice_id": 501,
+          "amount": 840.0,
+          "status": "paid",
+          "description": "Rush reprint CC-TEE-WHITE S",
+          "message": "Invoice 501 (paid) is 'Rush reprint CC-TEE-WHITE S' from the same vendor. This purchase may duplicate it; a person should check."
+        }
+      ],
+      "acknowledged": {
+        "cash_warning": false,
+        "duplicate_warning": true
+      },
+      "cash_changed": false
+    },
+    "refs": {
+      "approval_id": "BUY-76936C1B"
+    },
+    "source": "manager"
+  },
+  {
+    "event_id": "EVT-A297928B",
+    "kind": "stock_receipt",
+    "ticket_id": 101,
+    "recorded_by": "Kohei",
+    "recorded_at": "2026-10-15T01:21:01+00:00",
+    "shop_date": "2026-08-31",
+    "simulated": true,
+    "basis": "Simulated delivery for Problem 9 testing. No real goods were received.",
+    "details": {
+      "sku": "CC-TEE-WHITE",
+      "size": "S",
+      "quantity": 1,
+      "source_kind": "purchase_order",
+      "qty_after": 1,
+      "cash_changed": false
+    },
+    "refs": {
+      "approval_id": "BUY-76936C1B"
+    },
+    "source": "manager"
+  },
+  {
+    "event_id": "EVT-2A25C1A1",
+    "kind": "fulfilment",
+    "ticket_id": 101,
+    "recorded_by": "Kohei",
+    "recorded_at": "2026-10-15T01:22:09+00:00",
+    "shop_date": "2026-08-31",
+    "simulated": true,
+    "basis": "Simulated fulfilment for Problem 9 testing. No real item was handed over.",
+    "details": {
+      "sku": "CC-TEE-WHITE",
+      "size": "S",
+      "quantity": 1,
+      "qty_after": 0,
+      "fulfilled_total": 1,
+      "ordered_qty": 1,
+      "revenue_recorded": false,
+      "cash_changed": false
+    },
+    "refs": {},
+    "source": "manager"
+  },
+  {
+    "event_id": "EVT-81D3B27A",
+    "kind": "pricing_decision",
+    "ticket_id": 103,
+    "recorded_by": "Kohei",
+    "recorded_at": "2026-10-15T02:04:02+00:00",
+    "shop_date": "2026-08-31",
+    "simulated": false,
+    "basis": "Approved based on the agent's recommendation: $52.20 per hoodie is above the $22 unit cost.",
+    "details": {
+      "decision": "approved",
+      "sku": "CC-HOOD-NAVY",
+      "size": "M",
+      "quantity": 20,
+      "discount_pct": 10.0,
+      "list_price": 58.0,
+      "unit_cost": 22.0,
+      "unit_price": 52.2,
+      "margin_per_unit": 30.2,
+      "note": "Approve the agent's proposed 10% bulk discount. The price of $52.20 remains above the $22 unit cost.",
+      "revenue_recorded": false
+    },
+    "refs": {},
+    "source": "manager"
+  },
+  {
+    "event_id": "EVT-7C4B5F5C",
+    "kind": "purchase_cancelled",
+    "ticket_id": 103,
+    "recorded_by": "Kohei",
+    "recorded_at": "2026-10-15T02:17:44+00:00",
+    "shop_date": "2026-08-31",
+    "simulated": false,
+    "basis": "Manager decision recorded in the dashboard",
+    "details": {
+      "reason": "Insufficient checking balance: $264 restock cost exceeds $160 available.",
+      "sku": "CC-HOOD-NAVY",
+      "size": "M",
+      "quantity": 12
+    },
+    "refs": {
+      "approval_id": "BUY-FF090480"
+    },
+    "source": "manager"
+  }
+]

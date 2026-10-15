@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Customs Desk: Tickets 101–103</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --text: #1d2330;
+    --muted: #5f6878;
+    --border: #dde1e8;
+    --accent: #00356b;        /* Yale blue */
+    --accent-soft: #e6eef7;
+    --pending-bg: #fbfaf5;
+    --pending-border: #d9d3bd;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171c;
+      --card: #1c2027;
+      --text: #e6e9ef;
+      --muted: #9aa3b2;
+      --border: #2e3440;
+      --accent: #7fb2e5;
+      --accent-soft: #1f2b3a;
+      --pending-bg: #1f1e19;
+      --pending-border: #4a4535;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header { padding: 28px 32px 0; max-width: 980px; margin: 0 auto; }
+  header h1 { margin: 0 0 4px; font-size: 22px; }
+  header p { margin: 0; color: var(--muted); }
+
+  .tabs {
+    display: flex; gap: 4px; flex-wrap: wrap;
+    max-width: 980px; margin: 20px auto 0; padding: 0 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    appearance: none; border: 1px solid transparent; border-bottom: none;
+    background: none; color: var(--muted); font: inherit; font-weight: 600;
+    padding: 10px 16px; border-radius: 8px 8px 0 0; cursor: pointer;
+    margin-bottom: -1px;
+  }
+  .tab:hover { color: var(--text); }
+  .tab[aria-selected="true"] {
+    background: var(--card); color: var(--accent);
+    border-color: var(--border); border-bottom: 1px solid var(--card);
+  }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  main { max-width: 980px; margin: 0 auto; padding: 0 32px 48px; }
+  .panel {
+    background: var(--card); border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 10px 10px; padding: 24px 28px 28px;
+  }
+  .panel[hidden] { display: none; }
+  .panel h2 { margin: 0 0 4px; font-size: 19px; }
+  .panel .subtitle { margin: 0 0 20px; color: var(--muted); }
+
+  .request {
+    background: var(--accent-soft); border-radius: 8px; padding: 14px 18px; margin-bottom: 24px;
+  }
+  .request h3 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  .request dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 0; }
+  .request dt { color: var(--muted); }
+  .request dd { margin: 0; }
+  .request code { font-size: 13px; }
+
+  section.plan { margin-top: 22px; }
+  section.plan h3 { margin: 0 0 8px; font-size: 16px; }
+  .placeholder {
+    border: 1.5px dashed var(--pending-border); background: var(--pending-bg);
+    border-radius: 8px; padding: 18px 20px; color: var(--muted); min-height: 110px;
+  }
+  .placeholder strong { color: var(--text); }
+  .prediction {
+    border: 1px solid var(--border); border-left: 4px solid var(--accent);
+    border-radius: 8px; padding: 14px 20px 16px;
+  }
+  .prediction .label {
+    display: inline-block; font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .04em; color: var(--accent); margin-bottom: 6px;
+  }
+  .prediction h4 { margin: 14px 0 4px; font-size: 14px; }
+  .prediction p, .prediction ol { margin: 4px 0; }
+  .prediction ol { padding-left: 22px; }
+  .prediction code { font-size: 13px; }
+  .coming-later { text-align: center; padding: 48px 20px; min-height: 0; }
+  footer { max-width: 980px; margin: 0 auto; padding: 0 32px 32px; color: var(--muted); font-size: 13px; }
+
+  .actual { border: 1px solid var(--border); border-left: 4px solid #1d7a4d; border-radius: 8px; padding: 14px 20px 16px; }
+  .actual .label { display: inline-block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #1d7a4d; margin-bottom: 6px; }
+  .actual h4 { margin: 14px 0 4px; font-size: 14px; }
+  .actual p, .actual ul { margin: 4px 0; }
+  .actual ul { padding-left: 22px; }
+  .actual table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 6px; }
+  .actual th, .actual td { border: 1px solid var(--border); padding: 4px 6px; text-align: left; vertical-align: top; }
+  .actual td.num { text-align: right; white-space: nowrap; }
+  .muted { color: var(--muted); }
+  .tag { display: inline-block; font-size: 11px; padding: 0 6px; border-radius: 999px; border: 1px solid var(--border); }
+  .tag.ok { color: #1d7a4d; border-color: #1d7a4d; } .tag.diff { color: #8a5a00; border-color: #8a5a00; }
+  .tag.sim { color: #8a5a00; border: 1px dashed #8a5a00; } .tag.dec { color: var(--muted); }
+  .reflection h3 { margin: 18px 0 4px; font-size: 16px; }
+  .reflection p, .reflection ul { margin: 4px 0; }
+  .reflection ul { padding-left: 22px; }
+  .reflection li { margin: 3px 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Campus Customs Desk: Tickets 101–103</h1>
+  <p>Problem 6 · Shop date (<code>desk.date_today</code>): 2026-08-31 · Expected plans vs. what the agents actually do</p>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Desk tabs">
+  <button class="tab" role="tab" id="tab-101" aria-controls="panel-101" aria-selected="true">Ticket 101</button>
+  <button class="tab" role="tab" id="tab-102" aria-controls="panel-102" aria-selected="false" tabindex="-1">Ticket 102</button>
+  <button class="tab" role="tab" id="tab-103" aria-controls="panel-103" aria-selected="false" tabindex="-1">Ticket 103</button>
+  <button class="tab" role="tab" id="tab-cash" aria-controls="panel-cash" aria-selected="false" tabindex="-1">Cash</button>
+  <button class="tab" role="tab" id="tab-reflection" aria-controls="panel-reflection" aria-selected="false" tabindex="-1">Reflection</button>
+</nav>
+
+<main>
+
+  <!-- ===================== Ticket 101 ===================== -->
+  <div class="panel" role="tabpanel" id="panel-101" aria-labelledby="tab-101">
+    <h2>Ticket 101: Bulldog tee</h2>
+    <p class="subtitle">Customer order</p>
+
+    <div class="request">
+      <h3>Ticket record (from the <code>tickets</code> table)</h3>
+      <dl>
+        <dt>Requester</dt><dd>Tauhid Zaman</dd>
+        <dt>Type</dt><dd><code>customer_order</code></dd>
+        <dt>Item</dt><dd><code>CC-TEE-WHITE</code>, size S, qty 1</dd>
+        <dt>Linked invoice</dt><dd>501</dd>
+        <dt>Notes</dt><dd>Needs a tee in size S.</dd>
+        <dt>Created</dt><dd>2026-08-31 09:15 (−04:00) · status <code>open</code></dd>
+      </dl>
+    </div>
+
+    <section class="plan" id="expected-101">
+      <h3>Expected</h3>
+      <div class="prediction" data-slot="expected-101">
+        <span class="label">My prediction (written before running the agents)</span>
+        <h4>First agent</h4>
+        <p>Boss will call <strong>Inventory</strong> first because we need to check stock availability and whether the item can be restocked.</p>
+        <h4>Expected delegations</h4>
+        <ol>
+          <li><strong>Boss → Inventory:</strong> Check stock, shortage, vendor restrictions, and lead times.</li>
+          <li><strong>Inventory → Accounting:</strong> Check the unpaid $840 invoice and whether the shop can afford to pay it.</li>
+          <li><strong>Boss → Customer Service:</strong> Use those findings to draft a response to the customer.</li>
+        </ol>
+        <h4>Expected MCP tools</h4>
+        <p><code>get_ticket</code>, <code>get_shop_date</code>, <code>get_product_info</code>, <code>list_vendors</code>, <code>get_vendor_status</code>, <code>get_invoice_info</code>, <code>get_cash_position</code>, <code>list_payment_approvals</code>, and possibly <code>request_payment_approval</code>.</p>
+      </div>
+    </section>
+
+    <section class="plan" id="actual-101">
+      <h3>Actual</h3>
+      <div class="actual" data-slot="actual-101">
+        <span class="label">Actual (from the real runs and records)</span>
+        <h4>Outcome</h4>
+        <p><b>Final status: resolved</b> at 2026-10-15 01:30 UTC. Resolved: Recommend resolving the order: the recorded simulated customer response was to wait, the approved purchase was received, and the requested one tee was fulfilled (quantity still to fulfil: 0).</p>
+        <p class="muted">Resolved by: run-a86189ca4702 (team run). Final Boss decision: <i>Recommend resolving the order: the recorded simulated customer response was to wait, the approved purchase was received, and the requested one tee was fulfilled (quantity still to fulfil: 0).</i></p>
+        <h4>First agent</h4>
+        <p>Inventory <span class="tag ok">matches Expected</span></p>
+        <h4>Agents involved</h4><p>Boss, Inventory, Customer Service, Accounting</p>
+        <h4>Delegations (all runs)</h4><ul><li>Boss → Inventory <span class="tag ok">expected</span></li><li>Boss → Customer Service <span class="tag ok">expected</span></li><li>Boss → Accounting</li><li>Customer Service → Inventory</li><li>Customer Service → Accounting</li></ul>
+        <p class='muted'>Expected but not seen: Inventory → Accounting</p>
+        <h4>MCP tools used (by agent)</h4><ul><li><b>Boss:</b> <code>get_ticket</code> <code>get_shop_date</code> <code>list_payment_approvals</code> <code>get_ticket_updates</code></li><li><b>Accounting:</b> <code>get_ticket</code> <code>get_invoice_info</code> <code>get_shop_date</code> <code>get_cash_position</code> <code>list_payment_approvals</code> <code>request_payment_approval</code> <code>execute_payment</code> <code>get_rent_info</code> <code>get_ticket_updates</code></li><li><b>Inventory:</b> <code>get_ticket</code> <code>get_product_info</code> <code>list_vendors</code> <code>get_shop_date</code> <code>get_product_sizes</code> <code>get_vendor_status</code> <code>request_purchase_approval</code> <code>get_ticket_updates</code> <code>get_invoice_info</code></li><li><b>Customer Service:</b> <code>get_ticket</code> <code>get_shop_date</code> <code>get_product_info</code> <code>get_ticket_updates</code></li></ul>
+        <p class="muted">Expected tools used: 9/9 (all).
+           Also used: execute_payment, get_product_sizes, get_rent_info, get_ticket_updates, request_purchase_approval.</p>
+        <h4>Human approvals and decisions</h4><ul><li><code>PAY-6B7FD0D1</code> invoice $840.00: <b>executed</b> (approved by Kohei) · Rush reprint CC-TEE-WHITE S</li><li><code>BUY-76936C1B</code> purchase $8.00: <b>received</b> (approved by Kohei) (order and receipt recorded as <span class="tag sim">Simulated</span> manager events; no cash moved) · Restock 1 x Classic Bulldog Tee (S) from Bulldog Print Co</li></ul>
+        <h4>Manager-recorded events</h4><ul><li><span class="tag sim">Simulated</span> <b>customer response</b> by Kohei · {&quot;choice&quot;: &quot;wait&quot;, &quot;summary&quot;: &quot;Customer agrees to wait for size S (simulated).&quot;}<br><span class="muted">Basis: Hypothetical customer response for Problem 9 testing; no real customer was contacted.</span></li><li><span class="tag sim">Simulated</span> <b>purchase order</b> by Kohei · {&quot;sku&quot;: &quot;CC-TEE-WHITE&quot;, &quot;size&quot;: &quot;S&quot;, &quot;quantity&quot;: 1, &quot;expected_arrival&quot;: &quot;2026-09-05&quot;}<br><span class="muted">Basis: Simulated order for Problem 9. Invoice 501 may cover the same item, but this has not been verified. No real vendor was contacted.</span></li><li><span class="tag sim">Simulated</span> <b>stock receipt</b> by Kohei · {&quot;sku&quot;: &quot;CC-TEE-WHITE&quot;, &quot;size&quot;: &quot;S&quot;, &quot;quantity&quot;: 1}<br><span class="muted">Basis: Simulated delivery for Problem 9 testing. No real goods were received.</span></li><li><span class="tag sim">Simulated</span> <b>fulfilment</b> by Kohei · {&quot;sku&quot;: &quot;CC-TEE-WHITE&quot;, &quot;size&quot;: &quot;S&quot;, &quot;quantity&quot;: 1}<br><span class="muted">Basis: Simulated fulfilment for Problem 9 testing. No real item was handed over.</span></li></ul>
+        <h4>Completed vs. not completed</h4>
+        <ul>
+          <li><b>Completed financial transactions (cash moved):</b> <code>PAY-6B7FD0D1</code> invoice $840.00 to Bulldog Print Co</li>
+          <li><b>Not cash transactions:</b> <code>BUY-76936C1B</code> received $8.00: Order and receipt recorded as simulated manager events; placed before the bill-on-order rule, so no vendor invoice was created. No cash moved.</li>
+          <li><b>Simulated (stand-ins for customer/vendor actions):</b> customer response (EVT-E1720E21), purchase order (EVT-47532142), stock receipt (EVT-A297928B), fulfilment (EVT-2A25C1A1)</li>
+          <li><b>Fulfilment:</b> Fulfilled 1/1 (CC-TEE-WHITE S) via a simulated fulfilment event; no sale or revenue recorded.</li>
+        </ul>
+        <h4>Agent contributions (each agent's most recent summary for this ticket; run shown, may be earlier than the resolving run)</h4><ul><li><b>Accounting</b> <span class="muted">(run-190bd8b1be01)</span>: Invoice 501 for $840 is already paid, so no further payment is needed for it; however, the separate $8 restock remains only approved, and its duplicate warning must be checked before anyone orders or promises delivery. Ticket 101 is still open with zero fulfilled, and checking has $160 against $2,400 rent due September 2, so the $8 purchase is affordable alone but cash is not sufficient for all listed obligations.</li><li><b>Inventory</b> <span class="muted">(run-f0944d63e28b)</span>: Current stock lookup reports 0 CC-TEE-WHITE size S, against ticket 101’s need for 1; the prior receipt and fulfilment events are simulated and do not establish physical stock movement. I did not file a new approval: paid Invoice 501 is described as a rush reprint of this exact SKU and size, so a person should confirm whether it covers actual goods before creating a potentially duplicate restock.</li><li><b>Customer Service</b> <span class="muted">(run-f0944d63e28b)</span>: As of 2026-08-31, the recorded ticket shows the customer accepted waiting, one tee received and fulfilled, and 0 quantity remaining, so no further customer-service action is indicated. These events are explicitly simulated, however, so they do not establish that a real customer was contacted or a real tee was handed over; confirm actual-world completion before treating the order as closed. No new payment or restock request is indicated by the current recorded status.</li><li><b>Boss</b> <span class="muted">(run-a86189ca4702)</span>: Ticket 101 is fully handled: the customer agreed to wait, one size-S tee was received and fulfilled, and invoice 501 is already paid. These customer/vendor events were recorded as simulated; no new payment or purchase request is needed.</li></ul>
+        <h4>Runs (8)</h4>
+        <table><thead><tr><th>Run</th><th>Started</th><th>Kind</th><th>Tokens</th><th>Result for this ticket</th></tr></thead><tbody><tr><td><code>run-bdee8fa534a6</code></td><td>2026-10-14 21:31 UTC</td><td>team run (Boss)</td><td>41,189</td><td>open (awaiting human approval)</td></tr><tr><td><code>run-b5d616b25668</code></td><td>2026-10-14 21:35 UTC</td><td>payment execution (Accounting)</td><td>14,846</td><td>executed PAY-6B7FD0D1</td></tr><tr><td><code>run-d3b9c6264a10</code></td><td>2026-10-14 21:37 UTC</td><td>team run (Boss)</td><td>43,154</td><td>open (awaiting human approval)</td></tr><tr><td><code>run-2fe93b1d708f</code></td><td>2026-10-14 21:39 UTC</td><td>team run (Boss)</td><td>39,886</td><td>open (proposed)</td></tr><tr><td><code>run-0dcc910c122d</code></td><td>2026-10-15 01:04 UTC</td><td>team run (Boss)</td><td>69,113</td><td>open (blocked)</td></tr><tr><td><code>run-190bd8b1be01</code></td><td>2026-10-15 01:13 UTC</td><td>team run (Boss)</td><td>69,113</td><td>open (blocked)</td></tr><tr><td><code>run-f0944d63e28b</code></td><td>2026-10-15 01:22 UTC</td><td>team run (Boss)</td><td>59,657</td><td>open (needs more info)</td></tr><tr><td><code>run-a86189ca4702</code></td><td>2026-10-15 01:30 UTC</td><td>team run (Boss)</td><td>11,438</td><td>resolved (proposed)</td></tr></tbody></table>
+        <h4>Follow-ups / risks (final Boss decision)</h4><ul><li>The purchase event notes invoice 501 was also for a rush reprint of the same SKU and size, with a possible duplicate-purchase warning acknowledged. Consider a separate follow-up to verify whether the new purchase was redundant; this does not change the completed fulfillment of ticket 101.</li></ul>
+        <h4>Notes</h4><ul><li>run-190bd8b1be01 (Ticket 101) completed a 19-request team run in 5.5 s with token usage identical to run-0dcc910c122d. Both are real, separately triggered runs with distinct records, but the second run&#x27;s model responses were most likely served from the Portkey gateway&#x27;s response cache (inference from timing; nothing in this project caches). Both are kept exactly as logged.</li><li>BUY-76936C1B (1 tee, $8) was ordered and received through simulated manager events before the bill-on-order rule existed, so no vendor invoice exists for it and no cash moved. Invoice 501 (paid) may also cover the same tee; this possible duplicate is recorded as a follow-up risk.</li></ul>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== Ticket 102 ===================== -->
+  <div class="panel" role="tabpanel" id="panel-102" aria-labelledby="tab-102" hidden>
+    <h2>Ticket 102: Rent due</h2>
+    <p class="subtitle">Rent notice</p>
+
+    <div class="request">
+      <h3>Ticket record (from the <code>tickets</code> table)</h3>
+      <dl>
+        <dt>Requester</dt><dd>Elm City Properties</dd>
+        <dt>Type</dt><dd><code>rent_notice</code></dd>
+        <dt>Linked lease</dt><dd>1</dd>
+        <dt>Notes</dt><dd>Email: shop rent due in 2 days.</dd>
+        <dt>Created</dt><dd>2026-08-31 11:05 (−04:00) · status <code>open</code></dd>
+      </dl>
+    </div>
+
+    <section class="plan" id="expected-102">
+      <h3>Expected</h3>
+      <div class="prediction" data-slot="expected-102">
+        <span class="label">My prediction (written before running the agents)</span>
+        <h4>First agent</h4>
+        <p>Boss will call <strong>Facilities</strong> first to verify the rent notice against the lease and assess payment urgency.</p>
+        <h4>Expected delegations</h4>
+        <ol>
+          <li><strong>Boss → Facilities:</strong> Verify the $2,400 rent, due date, payment status, and urgency.</li>
+          <li><strong>Facilities → Accounting:</strong> Check available cash, other obligations, and payment priorities.</li>
+        </ol>
+        <h4>Expected MCP tools</h4>
+        <p><code>get_ticket</code>, <code>get_shop_date</code>, <code>get_rent_info</code>, <code>get_cash_position</code>, <code>list_open_invoices</code>, <code>list_payment_approvals</code>, and possibly <code>request_payment_approval</code>.</p>
+        <h4>Key point</h4>
+        <p>Accounting should consider that paying both rent and the $840 invoice would leave only $160 in checking.</p>
+      </div>
+    </section>
+
+    <section class="plan" id="actual-102">
+      <h3>Actual</h3>
+      <div class="actual" data-slot="actual-102">
+        <span class="label">Actual (from the real runs and records)</span>
+        <h4>Outcome</h4>
+        <p><b>Final status: resolved</b> at 2026-10-14 21:29 UTC. Resolved: PAY-58EB2241 executed and nothing else was needed.</p>
+        <p class="muted">Resolved by: run-c73c4c25b533 (payment execution). Final Boss decision: <i>Recommend paying the $2,400 rent to Elm City Properties by the due date, subject to human approval of PAY-58EB2241. Accounting reports $3,400 in checking, so the rent is affordable on its own.</i></p>
+        <h4>First agent</h4>
+        <p>Facilities <span class="tag ok">matches Expected</span></p>
+        <h4>Agents involved</h4><p>Boss, Facilities, Accounting</p>
+        <h4>Delegations (all runs)</h4><ul><li>Boss → Facilities <span class="tag ok">expected</span></li><li>Facilities → Accounting <span class="tag ok">expected</span></li><li>Boss → Accounting</li></ul>
+        
+        <h4>MCP tools used (by agent)</h4><ul><li><b>Boss:</b> <code>get_ticket</code> <code>get_shop_date</code> <code>list_payment_approvals</code></li><li><b>Facilities:</b> <code>get_shop_date</code> <code>get_ticket</code> <code>get_cash_position</code> <code>get_rent_info</code></li><li><b>Accounting:</b> <code>get_shop_date</code> <code>get_rent_info</code> <code>get_cash_position</code> <code>get_ticket</code> <code>list_open_invoices</code> <code>list_payment_approvals</code> <code>request_payment_approval</code> <code>execute_payment</code></li></ul>
+        <p class="muted">Expected tools used: 7/7 (all).
+           Also used: execute_payment.</p>
+        <h4>Human approvals and decisions</h4><ul><li><code>PAY-58EB2241</code> rent $2,400.00: <b>executed</b> (approved by Kohei) · Rent for Chapel Street shop</li></ul>
+        <h4>Manager-recorded events</h4><ul><li>None</li></ul>
+        <h4>Completed vs. not completed</h4>
+        <ul>
+          <li><b>Completed financial transactions (cash moved):</b> <code>PAY-58EB2241</code> rent $2,400.00 to Elm City Properties</li>
+          <li><b>Not cash transactions:</b> none</li>
+          <li><b>Simulated (stand-ins for customer/vendor actions):</b> none</li>
+          <li><b>Fulfilment:</b> No product to fulfil (payment ticket).</li>
+        </ul>
+        <h4>Agent contributions (each agent's most recent summary for this ticket; run shown, may be earlier than the resolving run)</h4><ul><li><b>Accounting</b> <span class="muted">(run-c73c4c25b533)</span>: PAY-58EB2241 was confirmed approved by Kohei and successfully executed as the $2,400 rent payment to Elm City Properties. The payment reduced checking to $1,000; no other requests or payments were made.</li><li><b>Facilities</b> <span class="muted">(run-1edbc311e0d6)</span>: Ticket 102’s notice date matches lease 1: $2,400 is due September 2, 2026, two days after the shop date, and no rent payment is recorded. Treat this as urgent: Accounting confirms the $3,400 checking balance covers rent and the $840 overdue invoice, leaving $160 if both are paid; prioritize arranging rent by the due date through Accounting and required human approval, without making a payment here.</li><li><b>Boss</b> <span class="muted">(run-1edbc311e0d6)</span>: Ticket 102 rent is unpaid and due September 2. Accounting filed a human approval request; no payment has been made.</li></ul>
+        <h4>Runs (2)</h4>
+        <table><thead><tr><th>Run</th><th>Started</th><th>Kind</th><th>Tokens</th><th>Result for this ticket</th></tr></thead><tbody><tr><td><code>run-1edbc311e0d6</code></td><td>2026-10-14 21:26 UTC</td><td>team run (Boss)</td><td>36,333</td><td>awaiting_human (awaiting human approval)</td></tr><tr><td><code>run-c73c4c25b533</code></td><td>2026-10-14 21:29 UTC</td><td>payment execution (Accounting)</td><td>10,407</td><td>executed PAY-58EB2241</td></tr></tbody></table>
+        <h4>Follow-ups / risks (final Boss decision)</h4><ul><li>Accounting reports a separate $840 overdue invoice. Paying both that invoice and rent would leave $160 in checking; this ticket-specific plan does not include that invoice.</li></ul>
+        
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== Ticket 103 ===================== -->
+  <div class="panel" role="tabpanel" id="panel-103" aria-labelledby="tab-103" hidden>
+    <h2>Ticket 103: Bulk hoodie discount</h2>
+    <p class="subtitle">Price override request</p>
+
+    <div class="request">
+      <h3>Ticket record (from the <code>tickets</code> table)</h3>
+      <dl>
+        <dt>Requester</dt><dd>Yale AI Club</dd>
+        <dt>Type</dt><dd><code>price_override</code></dd>
+        <dt>Item</dt><dd><code>CC-HOOD-NAVY</code>, size M, qty 20</dd>
+        <dt>Notes</dt><dd>Student org wants 20 hoodies, size M, asking for a bulk discount.</dd>
+        <dt>Created</dt><dd>2026-08-31 16:55 (−04:00) · status <code>open</code></dd>
+      </dl>
+    </div>
+
+    <section class="plan" id="expected-103">
+      <h3>Expected</h3>
+      <div class="prediction" data-slot="expected-103">
+        <span class="label">My prediction (written before running the agents)</span>
+        <h4>First agent</h4>
+        <p>Boss will call <strong>Customer Service</strong> first because the main issue is a bulk order and discount request.</p>
+        <h4>Expected delegations</h4>
+        <ol>
+          <li><strong>Boss → Customer Service:</strong> Evaluate a reasonable discount and prepare a recommendation.</li>
+          <li><strong>Customer Service → Inventory:</strong> Check the shortage of 12 hoodies, restocking options, vendor restrictions, and lead times.</li>
+          <li><strong>Customer Service → Accounting</strong> only if an unpaid vendor invoice creates a financial obstacle.</li>
+        </ol>
+        <h4>Expected MCP tools</h4>
+        <p><code>get_ticket</code>, <code>get_shop_date</code>, <code>get_product_info</code>, <code>get_product_sizes</code>, <code>quote_price</code>, <code>list_vendors</code>, and <code>get_vendor_status</code>. Accounting tools may be needed if a payment issue arises.</p>
+        <h4>Key point</h4>
+        <p>Any proposed discounted unit price must remain above the $22 unit cost.</p>
+      </div>
+    </section>
+
+    <section class="plan" id="actual-103">
+      <h3>Actual</h3>
+      <div class="actual" data-slot="actual-103">
+        <span class="label">Actual (from the real runs and records)</span>
+        <h4>Outcome</h4>
+        <p><b>Final status: resolved</b> at 2026-10-15 02:20 UTC. Resolved: Honor the manager-approved 10% discount at $52.20 per hoodie for 20 (above the $22 unit cost). The quote is not a sale or recorded revenue. Reply draft accurately explains that only 8 are available and the remaining 12 are not on order.</p>
+        <p class="muted">Resolved by: run-710a7503bb7f (team run). Final Boss decision: <i>Honor the manager-approved 10% discount at $52.20 per hoodie for 20 (above the $22 unit cost). The quote is not a sale or recorded revenue. Reply draft accurately explains that only 8 are available and the remaining 12 are not on order.</i></p>
+        <h4>First agent</h4>
+        <p>Inventory <span class="tag diff">Expected: Customer Service</span></p>
+        <h4>Agents involved</h4><p>Boss, Inventory, Customer Service, Accounting</p>
+        <h4>Delegations (all runs)</h4><ul><li>Boss → Inventory</li><li>Boss → Customer Service <span class="tag ok">expected</span></li><li>Customer Service → Inventory <span class="tag ok">expected</span></li><li>Boss → Accounting</li></ul>
+        <p class='muted'>Expected but not seen: Customer Service → Accounting</p>
+        <h4>MCP tools used (by agent)</h4><ul><li><b>Boss:</b> <code>get_ticket</code> <code>get_shop_date</code> <code>get_ticket_updates</code> <code>list_payment_approvals</code></li><li><b>Inventory:</b> <code>get_ticket</code> <code>get_shop_date</code> <code>get_product_info</code> <code>list_vendors</code> <code>get_vendor_status</code> <code>request_purchase_approval</code> <code>get_product_sizes</code> <code>get_ticket_updates</code></li><li><b>Customer Service:</b> <code>get_ticket</code> <code>get_shop_date</code> <code>get_product_info</code> <code>quote_price</code> <code>get_ticket_updates</code></li><li><b>Accounting:</b> <code>get_ticket</code> <code>get_ticket_updates</code> <code>list_open_invoices</code> <code>get_cash_position</code></li></ul>
+        <p class="muted">Expected tools used: 7/7 (all).
+           Also used: get_cash_position, get_ticket_updates, list_open_invoices, list_payment_approvals, request_purchase_approval.</p>
+        <h4>Human approvals and decisions</h4><ul><li><code>BUY-9688DD9C</code> purchase $264.00: <b>rejected</b> (rejected by Kohei) · Restock 12 x Basic Hoodie Big Yale (M) from Bulldog Print Co</li><li><code>BUY-FF090480</code> purchase $264.00: <b>cancelled</b> (approved by Kohei) (cancelled by Kohei: Insufficient checking balance: $264 restock cost exceeds $160 available.) · Restock 12 x Basic Hoodie Big Yale (M) from Bulldog Print Co</li></ul>
+        <h4>Manager-recorded events</h4><ul><li><span class="tag dec">Manager decision</span> <b>pricing decision</b> by Kohei · {&quot;decision&quot;: &quot;approved&quot;, &quot;sku&quot;: &quot;CC-HOOD-NAVY&quot;, &quot;size&quot;: &quot;M&quot;, &quot;quantity&quot;: 20, &quot;discount_pct&quot;: 10.0, &quot;unit_price&quot;: 52.2}<br><span class="muted">Basis: Approved based on the agent&#x27;s recommendation: $52.20 per hoodie is above the $22 unit cost.</span></li><li><span class="tag dec">Manager decision</span> <b>purchase cancelled</b> by Kohei · {&quot;reason&quot;: &quot;Insufficient checking balance: $264 restock cost exceeds $160 available.&quot;, &quot;sku&quot;: &quot;CC-HOOD-NAVY&quot;, &quot;size&quot;: &quot;M&quot;, &quot;quantity&quot;: 12}<br><span class="muted">Basis: Manager decision recorded in the dashboard</span></li></ul>
+        <h4>Completed vs. not completed</h4>
+        <ul>
+          <li><b>Completed financial transactions (cash moved):</b> none</li>
+          <li><b>Not cash transactions:</b> <code>BUY-9688DD9C</code> rejected $264.00: Rejected by a person. No cash moved.; <code>BUY-FF090480</code> cancelled $264.00: Approved, then cancelled by a person before ordering: Insufficient checking balance: $264 restock cost exceeds $160 available. No cash moved.; <code>EVT-81D3B27A</code> approved: Quote only; no sale, revenue, or cash recorded.</li>
+          <li><b>Simulated (stand-ins for customer/vendor actions):</b> none</li>
+          <li><b>Fulfilment:</b> Not fulfilled: 0/20 handed over (CC-HOOD-NAVY M). 8 on hand; no restock on order (the 12-unit restock was rejected/cancelled). Resolved as a price request; delivery is a follow-up.</li>
+        </ul>
+        <h4>Agent contributions (each agent's most recent summary for this ticket; run shown, may be earlier than the resolving run)</h4><ul><li><b>Inventory</b> <span class="muted">(run-710a7503bb7f)</span>: Ticket 103 has 8 of 20 requested M hoodies on hand, leaving a 12-unit shortfall. Bulldog Print Co is unrestricted and has a 5-day lead time—hypothetically Sept 5, 2026 from the shop date, only if a new order is later authorized and placed—but the prior 12-unit purchase was rejected and its approved follow-up canceled because $264 exceeded the $160 checking balance, so it should not be resubmitted absent changed circumstances; size L has 14 on hand as a possible customer-approved alternative. The recorded pricing approval and cancellation are marked non-simulated; there are no simulated customer/vendor events in the updates.</li><li><b>Customer Service</b> <span class="muted">(run-710a7503bb7f)</span>: Drafted a reply for Yale AI Club with the manager-approved 10% quote ($52.20 each; $1,044 for 20), while clearly stating that only 8 size-M hoodies are on hand and no restock is in progress. The 12-unit purchase was canceled for insufficient funds; the pricing approval and cancellation are recorded as non-simulated, and there are no simulated customer/vendor events on this ticket. Boss follow-up is needed before any restock is pursued; the 5-day lead time is conditional, not a delivery promise.</li><li><b>Boss</b> <span class="muted">(run-710a7503bb7f)</span>: Ticket 103: the approved 10% quote is $52.20 each ($1,044 for 20). Customer Service drafted a reply noting only 8 size-M hoodies are on hand and no restock is in progress. The earlier purchase was canceled for insufficient funds; no repeat request was filed. The recorded pricing decision and purchase cancellation were non-simulated; no simulated customer or vendor events were recorded.</li><li><b>Accounting</b> <span class="muted">(run-031b9ded49b4)</span>: No open vendor invoice from Bulldog Print Co is restricting a new purchase: the open-invoice list is empty, and ticket 103 has no linked or unpaid vendor invoices. There is no ticket-linked payment to recommend or file; its Bulldog Print Co purchase request for $264 was rejected, not converted into an invoice. Checking cash is $160, and no payment was requested.</li></ul>
+        <h4>Runs (4)</h4>
+        <table><thead><tr><th>Run</th><th>Started</th><th>Kind</th><th>Tokens</th><th>Result for this ticket</th></tr></thead><tbody><tr><td><code>run-3a469b287291</code></td><td>2026-10-14 21:53 UTC</td><td>team run (Boss)</td><td>37,288</td><td>open (awaiting human approval)</td></tr><tr><td><code>run-1606d845a642</code></td><td>2026-10-15 02:01 UTC</td><td>team run (Boss)</td><td>37,680</td><td>awaiting_human (awaiting human approval)</td></tr><tr><td><code>run-031b9ded49b4</code></td><td>2026-10-15 02:04 UTC</td><td>team run (Boss)</td><td>77,090</td><td>open (awaiting human approval)</td></tr><tr><td><code>run-710a7503bb7f</code></td><td>2026-10-15 02:17 UTC</td><td>team run (Boss)</td><td>90,737</td><td>resolved (no action)</td></tr></tbody></table>
+        <h4>Follow-ups / risks (final Boss decision)</h4><ul><li>Only 8 of 20 requested size-M hoodies are currently available. The 12-unit restock is not in progress because the prior $264 purchase was canceled when only $160 was available. The supplier&#x27;s reported 5-day lead time applies only if a new order is later authorized and placed.</li></ul>
+        
+      </div>
+    </section>
+  </div>
+
+  <!-- ===================== Cash ===================== -->
+  <div class="panel" role="tabpanel" id="panel-cash" aria-labelledby="tab-cash" hidden>
+    <h2>Cash</h2>
+    <div class="actual" data-slot="cash">
+      <span class="label">Actual (payments table and cash_accounts in data/campus_customs_new.db)</span>
+      <h4>Starting balance</h4>
+      <p><b>$3,400.00</b> in checking, right after the database reset at 2026-10-14 21:23:16 UTC
+         (restored from <code>data/campus_customs.db</code>; confirmed via <code>/api/cash</code> and <code>cash_accounts</code> at Problem 9 preparation).</p>
+      <h4>Cash movements by ticket (actual payments only)</h4>
+      <table><thead><tr><th>Paid at</th><th>Ticket</th><th>Type</th><th>Approval</th><th>Payee</th><th>Amount</th><th>Reason (as filed by Accounting)</th><th>Balance after</th></tr></thead>
+      <tbody><tr><td colspan="7"><i>Starting balance</i></td><td class="num">$3,400.00</td></tr><tr><td>2026-10-14 21:29 UTC</td><td>#102</td><td>rent payment</td><td><code>PAY-58EB2241</code></td><td>Elm City Properties</td><td class='num'>−$2,400.00</td><td>Rent for Chapel Street shop; Ticket 102 rent notice: $2,400 due 2026-09-02; request human approval for the lease payment. Checking cash is $3,400, sufficient for rent alone. (approved by Kohei; executed by the Accounting Agent)</td><td class='num'>$1,000.00</td></tr><tr><td>2026-10-14 21:35 UTC</td><td>#101</td><td>invoice payment</td><td><code>PAY-6B7FD0D1</code></td><td>Bulldog Print Co</td><td class='num'>−$840.00</td><td>Rush reprint CC-TEE-WHITE S; Ticket 101 is an open customer order for the Bulldog tee in size S; invoice 501 funds the rush reprint, is $840 and 3 days overdue as of 2026-08-31. Recommend prioritizing this order-linked, overdue vendor invoice now; checking has $1,000, so paying it would leave $160 and rent of $2,400 is due 2026-09-02 and cannot also be covered. (approved by Kohei; executed by the Accounting Agent)</td><td class='num'>$160.00</td></tr></tbody></table>
+      <h4>Ending balance and reconciliation</h4>
+      <p>$3,400.00 − $2,400.00 − $840.00 = <b>$160.00</b>.
+         <code>cash_accounts</code> (checking) shows <b>$160.00</b>:
+         <span class="tag ok">reconciled</span></p>
+      <h4>No cash movement (for completeness)</h4>
+      <table><thead><tr><th>Ticket</th><th>Record</th><th>What</th><th>Amount</th><th>Status</th><th>Why no cash moved</th></tr></thead><tbody><tr><td>#101</td><td><code>BUY-76936C1B</code></td><td>Restock 1 x Classic Bulldog Tee (S) from Bulldog Print Co</td><td class='num'>$8.00</td><td>received</td><td>Order and receipt recorded as simulated manager events; placed before the bill-on-order rule, so no vendor invoice was created. No cash moved.</td></tr><tr><td>#103</td><td><code>BUY-9688DD9C</code></td><td>Restock 12 x Basic Hoodie Big Yale (M) from Bulldog Print Co</td><td class='num'>$264.00</td><td>rejected</td><td>Rejected by a person. No cash moved.</td></tr><tr><td>#103</td><td><code>BUY-FF090480</code></td><td>Restock 12 x Basic Hoodie Big Yale (M) from Bulldog Print Co</td><td class='num'>$264.00</td><td>cancelled</td><td>Approved, then cancelled by a person before ordering: Insufficient checking balance: $264 restock cost exceeds $160 available. No cash moved.</td></tr><tr><td>#103</td><td>EVT-81D3B27A</td><td>Pricing decision: approved 10.0% off → $52.20 each</td><td class='num'>—</td><td>decision</td><td>A quote, not a sale: no revenue recorded, no cash moved.</td></tr></tbody></table>
+      <p class="muted">Ticket 103 had no cash movement. No customer revenue is recorded anywhere (shop rule). Purchases move no cash until a vendor invoice is paid through Accounting and human approval.</p>
+    </div>
+  </div>
+
+  <!-- ===================== Reflection ===================== -->
+  <div class="panel" role="tabpanel" id="panel-reflection" aria-labelledby="tab-reflection" hidden>
+    <h2>Reflection</h2>
+    <div class="reflection" data-slot="reflection">
+      <h3>Q1. How well did the agents perform?</h3>
+      <p>Overall, the agents were better at diagnosing problems than at completing operational workflows.</p>
+      <ul>
+        <li><b>Ticket 101:</b> They found the size-S tee shortage and the $840 invoice 501, and the invoice was paid after my approval. But resolving the ticket took 8 runs, and the customer response, restock order, receipt, and fulfilment were simulated manager events, not real ones.</li>
+        <li><b>Ticket 102:</b> They handled the $2,400 rent payment well: one team run, my approval, and one Accounting payment run.</li>
+        <li><b>Ticket 103:</b> They found the 12-hoodie shortage (8 of 20 size M on hand) and proposed the 10% discount ($52.20, above the $22 cost) that I approved. But after I rejected the $264 restock (BUY-9688DD9C), Inventory filed the same request again (BUY-FF090480) in the next run. I approved it and then cancelled it, because $264 was more than the $160 left in checking.</li>
+      </ul>
+      <p>This showed me that good reasoning isn't enough. Agents must respect human decisions, avoid repeating rejected actions, and understand what "done" actually means.</p>
+
+      <h3>Q2. Expected vs. Actual</h3>
+      <ul>
+        <li><b>Ticket 101:</b> Inventory was consulted first, as I expected, and Boss → Customer Service happened too. But the Inventory → Accounting delegation I predicted never occurred. Instead, the Boss went to Accounting directly, and Customer Service also consulted Inventory and Accounting. The process was more complicated than planned because what "Resolved" meant was unclear at first, so it took 8 runs.</li>
+        <li><b>Ticket 102:</b> Actual closely matched Expected. Facilities went first, and both Boss → Facilities and Facilities → Accounting happened (the Boss also checked with Accounting directly). The agents verified the rent, Accounting requested the payment, and it was paid after my approval. My key point held: after rent and invoice 501, checking ended at $160.</li>
+        <li><b>Ticket 103:</b> Inventory was consulted first, not Customer Service as I predicted. Boss → Customer Service and Customer Service → Inventory happened as expected, but the Boss consulted Accounting directly instead of through Customer Service. The agents also re-filed the restock request after my rejection.</li>
+      </ul>
+      <p>My main lesson: workflow design has to plan for exceptions, rejected decisions, and requests that can't be fully fulfilled, not just the ideal delegation sequence.</p>
+
+      <h3>Q3. Single agent vs. multi-agent</h3>
+      <p>Ticket 102 would have been simpler with a single Accounting-focused agent. The job was to verify the $2,400 rent, check the $3,400 balance, get my approval, and pay, leaving $1,000. Instead, the Boss, Facilities, and Accounting took two runs and about 46,700 tokens.</p>
+      <p>The extra agents added coordination overhead without improving the decision. I would use one agent for straightforward transactions and multiple specialists when inventory, supplier, financial, and customer constraints interact, as in Tickets 101 and 103. Agent architecture should match decision complexity, not the number of business departments.</p>
+
+      <h3>Q4. Three new problems the current team could solve</h3>
+      <ul>
+        <li><b>A student requests 15 Crest Mugs</b>, which currently have 0 on hand. Inventory could identify the shortage, check vendors, and file a restock for my approval, building on Ticket 101.</li>
+        <li><b>A supplier blocks a new order because of an unpaid invoice.</b> Inventory and Accounting could investigate the restriction and arrange an approved payment, like invoice 501 in Ticket 101.</li>
+        <li><b>Another student club asks for 30 discounted hoodies.</b> Customer Service could propose pricing, Inventory could check stock, and Accounting could check affordability. As Ticket 103 showed, the team must respect a rejected purchase instead of requesting it again.</li>
+      </ul>
+      <p>These problems show the value of coordinating several operational constraints with the tools we already built.</p>
+
+      <h3>Q5. Three new problems the current team could not solve</h3>
+      <ul>
+        <li><b>Demand forecasting.</b> Inventory can see current shortages but can't predict future demand, and the database has no sales history. A Forecasting Agent with historical sales and seasonal analysis tools would be needed.</li>
+        <li><b>Flexible return policies.</b> Suppose Campus Customs allows returns within 14 days, and a student asks to return a defective product after 16 days. The system has no tools to check purchase history, manage returns, or evaluate policy exceptions. I would add a Returns Agent and return-management tools, with human approval required for exceptions.</li>
+        <li><b>End-to-end fulfilment.</b> Ticket 101 relied on simulated receipt and fulfilment, and Ticket 103 ended with none of the 20 hoodies delivered. A Fulfilment Agent with real shipping, delivery tracking, and approved customer communication tools would be needed.</li>
+      </ul>
+      <p>One important lesson from Problem 9 was that our first definition of "Resolved" was unclear, which led to unnecessary runs and simulated actions. I would track "Decision Complete" and "Fulfilment Complete" separately, so finishing an internal decision isn't confused with actually satisfying the customer.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>Standalone page with no external files or network requests. Ticket records are copied from <code>data/campus_customs_new.db</code>.</footer>
+
+<script>
+  // Tabs: click, arrow keys, and #101 / #102 / #103 / #cash / #reflection links.
+  const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+
+  function select(tab, focus) {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+    history.replaceState(null, '', '#' + tab.id.replace('tab-', ''));
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(tab, false));
+    tab.addEventListener('keydown', e => {
+      const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (step) { e.preventDefault(); select(tabs[(i + step + tabs.length) % tabs.length], true); }
+      if (e.key === 'Home') { e.preventDefault(); select(tabs[0], true); }
+      if (e.key === 'End') { e.preventDefault(); select(tabs[tabs.length - 1], true); }
+    });
+  });
+
+  const fromHash = document.getElementById('tab-' + location.hash.slice(1));
+  if (fromHash) select(fromHash, false);
+</script>
+</body>
+</html>

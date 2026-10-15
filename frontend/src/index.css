@@ -1,0 +1,72 @@
+:root {
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --surface-2: #f8f9fb;
+  --border: #e3e6eb;
+  --border-strong: #c9ced6;
+  --text: #1c2230;
+  --text-2: #5c6574;
+  --text-3: #8a93a1;
+  --accent: #1f5fbf;
+  --accent-bg: #e8f0fc;
+
+  --ok: #1d7a4d;
+  --ok-bg: #e5f4ec;
+  --warn: #8a5a00;
+  --warn-bg: #fdf3dc;
+  --danger: #b4232c;
+  --danger-bg: #fcebec;
+  --pro: #5b3fb5;
+  --pro-bg: #efeafd;
+
+  /* Agent identities: background / foreground / border */
+  --boss-bg: #eeedfe; --boss-fg: #3c3489; --boss-bd: #afa9ec;
+  --inventory-bg: #e1f5ee; --inventory-fg: #085041; --inventory-bd: #5dcaa5;
+  --accounting-bg: #e6f1fb; --accounting-fg: #0c447c; --accounting-bd: #85b7eb;
+  --facilities-bg: #faece7; --facilities-fg: #712b13; --facilities-bd: #f0997b;
+  --customer_service-bg: #fbeaf0; --customer_service-fg: #72243e; --customer_service-bd: #ed93b1;
+  --human-bg: #f1efe8; --human-fg: #444441; --human-bd: #b4b2a9;
+
+  --radius: 10px;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12151b;
+    --surface: #1a1e26;
+    --surface-2: #20252f;
+    --border: #2c323d;
+    --border-strong: #3d4552;
+    --text: #e7eaf0;
+    --text-2: #a3abb8;
+    --text-3: #7a8391;
+    --accent: #7fb0f0;
+    --accent-bg: #1c2a3f;
+    --ok: #6fd3a0; --ok-bg: #173226;
+    --warn: #f1c46b; --warn-bg: #3a2e14;
+    --danger: #f08a90; --danger-bg: #3d1a1d;
+    --pro: #b7a6f5; --pro-bg: #2a2342;
+    --boss-bg: #2d2a52; --boss-fg: #cecbf6; --boss-bd: #534ab7;
+    --inventory-bg: #0f3a31; --inventory-fg: #9fe1cb; --inventory-bd: #1d9e75;
+    --accounting-bg: #102d4d; --accounting-fg: #b5d4f4; --accounting-bd: #378add;
+    --facilities-bg: #4a2214; --facilities-fg: #f5c4b3; --facilities-bd: #d85a30;
+    --customer_service-bg: #4b1a2c; --customer_service-fg: #f4c0d1; --customer_service-bd: #d4537e;
+    --human-bg: #2c2c2a; --human-fg: #d3d1c7; --human-bd: #5f5e5a;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body, #root { min-height: 100%; }
+body { margin: 0; }
+h1, h2, h3 { margin: 0; font-weight: 600; }
+button, input { font: inherit; color: inherit; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }

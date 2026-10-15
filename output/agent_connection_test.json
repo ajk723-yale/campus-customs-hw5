@@ -1,0 +1,105 @@
+{
+  "run_id": "run-df1f218f7cd8",
+  "model": "gpt-6-luna",
+  "task": "CONNECTION AND DELEGATION TEST ONLY.\nDo not analyze, decide, or resolve tickets 101, 102, or 103. Do not request payment approvals or execute payments.\nLeave ticket_decisions and payments_needing_human_approval empty.\n\nDelegate exactly one short check to each specialist (ticket_ids = []):\n1. inventory: call get_product_sizes for CC-HAT-BLUE and get_vendor_status for vendor 2, and report the results.\n2. accounting: call get_shop_date and get_cash_position, and report the shop date and checking balance. Do not request or execute any payment.\n3. facilities: call get_shop_date, then consult accounting once, asking it to call get_cash_position and report the checking balance.\n4. customer_service: call quote_price for CC-MUG-CREST, quantity 1, discount 0, then consult inventory once, asking it to call get_product_sizes for CC-MUG-CREST. Do not draft customer replies.\n\nThen say in `summary` which specialists responded and which tools they used.",
+  "delegations": [
+    {
+      "from": "boss",
+      "to": "inventory",
+      "depth": 1
+    },
+    {
+      "from": "boss",
+      "to": "accounting",
+      "depth": 1
+    },
+    {
+      "from": "boss",
+      "to": "facilities",
+      "depth": 1
+    },
+    {
+      "from": "boss",
+      "to": "customer_service",
+      "depth": 1
+    },
+    {
+      "from": "facilities",
+      "to": "accounting",
+      "depth": 2
+    },
+    {
+      "from": "customer_service",
+      "to": "inventory",
+      "depth": 2
+    }
+  ],
+  "tool_calls": [
+    {
+      "agent": "facilities",
+      "tool": "get_shop_date"
+    },
+    {
+      "agent": "accounting",
+      "tool": "get_shop_date"
+    },
+    {
+      "agent": "accounting",
+      "tool": "get_cash_position"
+    },
+    {
+      "agent": "inventory",
+      "tool": "get_product_sizes"
+    },
+    {
+      "agent": "inventory",
+      "tool": "get_vendor_status"
+    },
+    {
+      "agent": "accounting",
+      "tool": "get_cash_position"
+    },
+    {
+      "agent": "customer_service",
+      "tool": "quote_price"
+    },
+    {
+      "agent": "inventory",
+      "tool": "get_product_sizes"
+    }
+  ],
+  "usage": {
+    "requests": 16,
+    "tool_calls": 14,
+    "input_tokens": 25966,
+    "output_tokens": 1700,
+    "total_tokens": 27666
+  },
+  "boss_output": {
+    "summary": "All four specialists responded. Inventory used get_product_sizes and get_vendor_status; Accounting used get_shop_date and get_cash_position; Facilities used get_shop_date and consulted Accounting for get_cash_position; Customer Service used quote_price and consulted Inventory for get_product_sizes. No tickets were analyzed or decided, and no payment actions were taken.",
+    "ticket_decisions": [],
+    "payments_needing_human_approval": [],
+    "consulted_agents": [
+      "inventory",
+      "accounting",
+      "facilities",
+      "customer_service"
+    ],
+    "risks": []
+  },
+  "checks": {
+    "run finished": true,
+    "boss delegated to all four specialists": true,
+    "specialist-to-specialist delegation (depth 2) happened": true,
+    "every agent run finished with a structured output": true,
+    "every tool call was allowed for its agent": true,
+    "every agent used gpt-6-luna": true,
+    "no approval requests or payments": true,
+    "ticket decisions left empty": true,
+    "database unchanged (sha256)": true,
+    "tickets 101-103 unchanged": true,
+    "no payments rows added": true,
+    "payment approvals unchanged": true
+  },
+  "all_passed": true
+}

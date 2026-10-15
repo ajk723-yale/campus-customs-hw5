@@ -1,0 +1,28 @@
+# Secrets: never commit real keys. Copy .env.example to .env and fill it in locally.
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node / Vite
+frontend/node_modules/
+frontend/dist/
+
+# Runtime files created while the app runs
+output/*.lock
+output/*.tmp
+output/approvals_archive/
+data/*.resetting
+
+# Local tool config with machine-specific absolute paths (.mcp.json is the portable version)
+.codex/
+
+# macOS
+.DS_Store
+
+# Personal proof file, not part of the assignment
+joke.txt
